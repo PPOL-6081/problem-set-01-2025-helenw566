@@ -1,6 +1,6 @@
 ---
 title: "Text as Data: Problem Set 01"
-author: "Professor Tiago Ventura"
+author: "Helen Wang"
 execute: 
   error: true
 format:
@@ -12,11 +12,11 @@ theme: default
 
 ## Instructions
 
-To complete this homework, you have two options. 
+To complete this homework, you have two options.
 
-You can either complete this assignment using a **dataset of your choice**. This is a great opportunity for you to start working with a dataset that you can potentially use for your final project. 
+You can either complete this assignment using a **dataset of your choice**. This is a great opportunity for you to start working with a dataset that you can potentially use for your final project.
 
-Your second option is to this dataset of social media posts from political candidates running for Congress during the 2022 U.S. Midterm election. 
+Your second option is to this dataset of social media posts from political candidates running for Congress during the 2022 U.S. Midterm election.
 
 You can download the dataset [here](https://www.dropbox.com/scl/fi/jz14130dlzj5xvca9txj4/midterm_candidates_labeled_all_May05.csv?rlkey=b0m1h6kk1af3uz9tjqyelthh3&dl=0)
 
@@ -26,38 +26,297 @@ If you want say thanks to the people who collected and shared this data with us 
 
 **IMPORTANT:** Remember to NOT commit your data to github. Github does not allow you to push large datasets to remote repositories. If you commit your dataset, you will need to reset your commit, and that's always a bit of work. In addition, remember that your notebook should be compiled with the results of the code blocks.
 
-## Question 1 
+```{r}
+pacman::p_load(
+  dplyr,
+  tidyr,
+  ggwordcloud,
+  quanteda,
+  quanteda.textstats,
+  preText,
+  tidytext,
+  quanteda.sentiment,
+  quanteda.dictionaries
+)
+```
+
+## Question 1
 
 Take a small a sample of your documents and read them carefully. This sample doesn't need to be random. Select cases that are more interesting, and close to your theoretical interest in this dataset. What are you thoughts about these documents? What did you learn after reading them?
 
-## Question 2 
+```{r}
+# read in file
+df <- read.csv("data/midterm_candidates_labeled_all_May05.csv")
 
-Tokenize your documents and pre-process them, removing any "extraneous" content you noticed in closely reading a sample of your documents. What content have you removed and why? Any pre-processing steps from what you saw in class that you consider not to use here? 
+# look at a random sample
 
+df %>%
+  slice_sample(n = 25) %>%
+  pull(text)
+
+```
+
+The content of the documents seem to vary widely--while largely written with a political agenda in mind, the texts seem to include everything from descriptive statistics, personal attacks against select politicians, support for political allies, calls of action for specific agendas, dissemination of campaign ideals/logistics, personal social interactions, etc. As expected from social media data, there's liberal use of hashtags, emojis, referencing to specific accounts, and links, which will have to be considered during preprocessing.
+
+## Question 2
+
+Tokenize your documents and pre-process them, removing any "extraneous" content you noticed in closely reading a sample of your documents. What content have you removed and why? Any pre-processing steps from what you saw in class that you consider not to use here?
+
+```{r}
+df_corpus <- df %>%
+  #removing NA text
+  filter(!is.na(text)) %>%
+  #convert to corpus
+  corpus(text_field = "text") %>%
+  #remove punctuation and numbers
+  tokens(
+    remove_punct = TRUE,
+    remove_numbers = TRUE, 
+    verbose = TRUE
+  ) %>%
+  #lowercase
+  tokens_tolower() %>%
+  #remove stopwords
+  tokens_remove(stopwords("en")) %>%
+  #stemming
+  tokens_wordstem() %>%
+  #convert to dfm
+  dfm() 
+
+df_corpus_trim <- df_corpus %>%
+  #trim for common words
+  dfm_trim(min_docfreq = 0.0005,
+             max_docfreq = 0.99,
+             docfreq_type ="prop", 
+             verbose = TRUE)  
+```
+
+In this case, I primarily removed punctuation, numbers, stop words, and also trimmed the document to remove common words and rare words. I also did some equivalence mapping via stemming While removing symbols were an option, given that we're working with social media data, I thought keep hashtags and @s could allow us to retain important context. I also avoid lemmatization as I already had conducted stemming and I did not want to reduce the complexity of the document too much by doing both. When trimming the document, I applied a much stricter bench mark for minimum document frequency versus maximum document frequency. While playing around with different options, I noticed that minimum document frequency appeared to play a more significant role in trimming (i.e. changing max_docfreq from 0.99 to 0.999 while holding min_docfreq constant had no effect while changing min_docfreq from 0.0001 to 0.0005 while holding max_docfreq led to a change form 9947 features to 3619). To reduce noise and to reduce computational expense, I took on a moderate approach to document trimming.
 
 ## Question 3
 
-Using [Danny and Spirling's Pretext](https://github.com/matthewjdenny/preText), tell me which of the pre-processing steps makes a more substantive difference in the data transformation? Would you keep all these steps or would you follow the PreText recommendations? Use a sample of the data to solve this question. 
+Using [Danny and Spirling's Pretext](https://github.com/matthewjdenny/preText), tell me which of the pre-processing steps makes a more substantive difference in the data transformation? Would you keep all these steps or would you follow the PreText recommendations? Use a sample of the data to solve this question.
 
-## Question 4 
+```{r, include= F ALSE}
+#preprocessing combinations
+preTextDoc <- factorial_preprocessing(
+  df %>% filter(!is.na(text)) %>% slice_sample(n = 200) %>% corpus(text_field = "text"),
+  use_ngrams = F,
+  infrequent_term_threshold = 0.2,
+  verbose = T
+)
 
-Pick an important source of variation in your data (for example: date, author identity, location, etc.). Subset the data along this dimension, and discuss which words discriminate better each group. You can do this by using TF-IDF, PMI, log(share $word_i$ in group a/share $word_i$ in b), or create a measure similar to Ban's article. 
+#getting pretext scores
+preTextResults <- preText(preTextDoc,
+                           dataset_name = "Midterm Candidate Social Media Posts",
+                           distance_method = "cosine",
+                           num_comparisons = 20,
+                           verbose = TRUE)
+
+# regression
+regression_coefficient_plot(preTextResults,
+                            remove_intercept = TRUE)
+```
+
+In this case, it appears "Remove Infrequent Terms" is the one that will lead to the most substantive difference, as it is the only one that is both (1) positive and (2) significantly different. The rest appear to result in nonsignificant differences. In this case, my approach largely conforms with preText's analysis. I'm using largely the same preprocessing approach and I am also taking a moderate approach to removing infrequent terms. However, I would elect to still remove some infrequent terms (rather than avoid taking them out altogether) given the high dimensionality of the current dataset. Retaining all 141,296 tokens is impractical and too computationally expensive to really be a feasible option.
+
+## Question 4
+
+Pick an important source of variation in your data (for example: date, author identity, location, etc.). Subset the data along this dimension, and discuss which words discriminate better each group. You can do this by using TF-IDF, PMI, log(share $word_i$ in group a/share $word_i$ in b), or create a measure similar to Ban's article.
+
+```{r}
+#checking options for variation
+df_corpus_trim@docvars %>% colnames()
+
+#using tf-idf so see which words discriminate better for each group
+tfidf_terms <- df_corpus_trim %>% 
+  dfm_tfidf(scheme_tf = "prop") %>% 
+  dfm_group(candidate.status, force = TRUE) %>%
+  convert(to = "data.frame") %>% 
+  pivot_longer(
+    cols = !doc_id,
+    names_to = "word",
+    values_to = "tf_idf"
+  ) %>%
+  rename(status = doc_id) %>% 
+  group_by(status) %>%
+  arrange(desc(tf_idf)) %>%
+  slice_head(n = 10)
+
+#plotting word clouds to visualize
+tfidf_terms %>%
+  ggplot(aes(
+    label = word, color = tf_idf)
+    ) +
+  geom_text_wordcloud()  +
+  theme_minimal() +
+  facet_wrap(~status) +
+  labs(title = "Most Common Words by Election Denial Status") +
+  theme(
+    plot.title = element_text(face = "bold", hjust = 0.5)
+  ) 
+
+```
+
+Here, I'm using "Candidate Status" as source of variation. Here we see that those who were on the ballot appear to be using language more centered on spurring voters to vote, notably having multiple references to "elect", "day", and "vote." It also seemed to cater more to thanking voters for their support. In contrast, candidates that were not on the ballot appeared more likely to use language centered around some kind of announcement, notably "announce" and the most common words seem to suggest that their declaration was tied to "trump," either as a result of his endorsement or otherwise. 
 
 ## Question 5
 
-Create a dictionary (or use a pre-existing dictionary) to measure a topic of interest in your data. It can be anything, sentiment, tone, misinformation, any topic of interest. Label your documents, and visualize the prevalence of your classes. 
+Create a dictionary (or use a pre-existing dictionary) to measure a topic of interest in your data. It can be anything, sentiment, tone, misinformation, any topic of interest. Label your documents, and visualize the prevalence of your classes.
+
+```{r}
+#adding sentiment scores
+
+sentiment_doc <- docvars(df_corpus_trim) %>% 
+  mutate(doc_id = docnames(df_corpus_trim)) %>%
+  merge(
+    df_corpus_trim %>% 
+      dfm_lookup(dictionary = data_dictionary_LSD2015[1:2]) %>% 
+      convert(to = "data.frame"),
+    by = "doc_id"
+  ) 
+
+sentiment_doc %>%
+  mutate(
+    major_sentiment = ifelse(
+      positive > negative, "Positive", ifelse(
+        negative > positive, "Negative", "Neutral"
+      )
+    )
+  ) %>%
+  group_by(major_sentiment) %>%
+  summarise(count = n()) %>%
+  ggplot() +
+  geom_col(aes(x = major_sentiment, y = count, fill = major_sentiment), alpha = 0.7) +
+  labs(
+    x = "Major Sentiment",
+    y = "Count",
+    title = "Major Sentiment across Social Media Posts by Count",
+    subtitle = "2022 Midterm Elections",
+    fill = "Sentiment"
+  ) +
+  theme_minimal()
+```
 
 
 ## Question 6
 
-Pick some documents (at least 10 for each class) that are exemplar (high probability) of being for each class of your dictionary. Read these documents.  Now let's try to augment a little your classifier.
+Pick some documents (at least 10 for each class) that are exemplar (high probability) of being for each class of your dictionary. Read these documents. Now let's try to augment a little your classifier.
+
+```{r}
+set.seed(88)
+
+#get documents with high prob
+sample_sent <- sentiment_doc %>%
+  filter((positive == 0 | negative == 0) & !(positive == 0 & negative == 0)) %>%
+  mutate(total =  positive + negative) %>%
+  filter(total > 5) %>% 
+  pivot_longer(
+    cols = c("positive", "negative"),
+    names_to = "class"
+  ) %>% 
+  filter(value != 0) %>%
+  group_by(class) %>%
+  slice_sample(n = 10) 
+
+#retrieve original text 
+sample_text <- df %>% 
+  merge(
+    sample_sent, 
+    by = "X",
+    all.y = T
+  ) %>%
+  select(class, doc_id, X, text) 
+
+sample_text %>% pull(text)
+```
+
 
 ### Question 6.1
 
-Using cosine similarity, grab the closest 10 documents to each reference document you read before. Read those. How well does the cosine similarity work? Try with another measure of distance. Anything interesting there? 
+Using cosine similarity, grab the closest 10 documents to each reference document you read before. Read those. How well does the cosine similarity work? Try with another measure of distance. Anything interesting there?
+
+##### Cosine
+
+```{r}
+#function to compute closest 10 documents to a reference doc
+closest_docs <- function(num, method_name) {
+  
+  #identify top 10 closest docs
+  similar_docs <- textstat_simil(
+    df_corpus_trim, y = df_corpus_trim[sample_sent$doc_id[num],] ,margin = "documents",
+    method = method_name
+  ) %>%
+    as.data.frame() %>%
+    arrange(desc(!!sym(method_name))) %>%
+    slice_head(n = 10) %>%
+    pull(document1)
+  
+  #pulls text of the top 10
+  top_text <- df[df$X %in% c(docvars(df_corpus_trim[similar_docs,])$X),] %>% pull(text)
+  
+  #returns as df
+  top_df <- data.frame(
+    "reference_doc" = rep(sample_sent$doc_id[num], 10),
+    "document" = similar_docs,
+    "text" = top_text
+  )
+  
+  #returns df
+  return(top_df)
+}
+
+#container
+comparing_doc <- data.frame(
+  matrix(ncol = 3, nrow = 0)
+)
+
+colnames(comparing_doc) <- c("reference_doc", "doc", "text")
+
+#loop to create top 10 for each ref document
+
+for (i in 1:length(sample_sent$X)) {
+  comparing_doc <- rbind(comparing_doc, closest_docs(i, "cosine"))
+}
+
+#cleaning up dataframe
+comparing_doc %>%
+  merge(
+    sample_text %>% rename(reference_doc = doc_id, ref_text = text), 
+    by = "reference_doc",
+    all.x = T
+  ) %>% 
+  select(class, reference_doc, ref_text, document, text) %>% View()
+```
+
+##### Euclidean
+
+```{r}
+#container
+comparing_doc_euc <- data.frame(
+  matrix(ncol = 3, nrow = 0)
+)
+
+colnames(comparing_doc) <- c("reference_doc", "doc", "text")
+
+#loop to create top 10 for each ref document
+
+for (i in 1:length(sample_sent$X)) {
+  comparing_doc_euc <- rbind(comparing_doc_euc, closest_docs(i, "jaccard"))
+}
+
+#cleaning up dataframe
+comparing_doc_euc %>%
+  merge(
+    sample_text %>% rename(reference_doc = doc_id, ref_text = text), 
+    by = "reference_doc",
+    all.x = T
+  ) %>% 
+  select(class, reference_doc, ref_text, document, text) %>% View()
+```
+
 
 
 ### Question 6.2
 
 Now, check qualitative these documents. Take a look at the top features, keyword in Context, higher TF-IDF. Would you change anything in your dictionary now that you looked in these documents?
-
