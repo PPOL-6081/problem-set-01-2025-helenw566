@@ -26,6 +26,12 @@ If you want say thanks to the people who collected and shared this data with us 
 
 **IMPORTANT:** Remember to NOT commit your data to github. Github does not allow you to push large datasets to remote repositories. If you commit your dataset, you will need to reset your commit, and that's always a bit of work. In addition, remember that your notebook should be compiled with the results of the code blocks.
 
+
+Gen AI Use:
+
+ChatGPT was consulted to deal with memory issues related to calling multiple textstat_simil(). Code was edited in response to reduce memory use, main changes being computing only one similarity matrix rather than 10 (1 for each reference document) and to see which similarity measure would be more memory-efficient. Also was consulted for Q6.2 in regards of how to run KIWC.
+
+
 ```{r}
 setwd("C:/Users/helen/OneDrive/Documents/Georgetown/F2025/text_analysis/problem-set-01-2025-helenw566/")
 
@@ -99,7 +105,7 @@ In this case, I primarily removed punctuation, numbers, stop words, and also tri
 
 Using [Danny and Spirling's Pretext](https://github.com/matthewjdenny/preText), tell me which of the pre-processing steps makes a more substantive difference in the data transformation? Would you keep all these steps or would you follow the PreText recommendations? Use a sample of the data to solve this question.
 
-```{r, include= F ALSE}
+```{r, include= FALSE}
 #preprocessing combinations
 preTextDoc <- factorial_preprocessing(
   df %>% filter(!is.na(text)) %>% slice_sample(n = 100) %>% corpus(text_field = "text"),
