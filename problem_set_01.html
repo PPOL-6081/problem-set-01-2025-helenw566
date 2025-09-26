@@ -2,11 +2,11 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.3.450">
+<meta name="generator" content="quarto-1.7.32">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="author" content="Professor Tiago Ventura">
+<meta name="author" content="Helen Wang">
 
 <title>Text as Data: Problem Set 01</title>
 <style>
@@ -22,6 +22,7 @@ ul.task-list li input[type="checkbox"] {
   vertical-align: middle;
 }
 /* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
 pre > code.sourceCode { white-space: pre; position: relative; }
 pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
@@ -59,22 +60,50 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 <script src="problem_set_01_files/libs/clipboard/clipboard.min.js"></script>
-<script src="problem_set_01_files/libs/quarto-html/quarto.js"></script>
+<script src="problem_set_01_files/libs/quarto-html/quarto.js" type="module"></script>
+<script src="problem_set_01_files/libs/quarto-html/tabsets/tabsets.js" type="module"></script>
 <script src="problem_set_01_files/libs/quarto-html/popper.min.js"></script>
 <script src="problem_set_01_files/libs/quarto-html/tippy.umd.min.js"></script>
 <script src="problem_set_01_files/libs/quarto-html/anchor.min.js"></script>
 <link href="problem_set_01_files/libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="problem_set_01_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="problem_set_01_files/libs/quarto-html/quarto-syntax-highlighting-37eea08aefeeee20ff55810ff984fec1.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="problem_set_01_files/libs/bootstrap/bootstrap.min.js"></script>
 <link href="problem_set_01_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="problem_set_01_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<link href="problem_set_01_files/libs/bootstrap/bootstrap-bb462d781dde1847d9e3ccf7736099dd.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 
-  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 </head>
 
-<body class="fullcontent">
+<body class="fullcontent quarto-light">
 
 <div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
 
@@ -92,7 +121,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div>
     <div class="quarto-title-meta-heading">Author</div>
     <div class="quarto-title-meta-contents">
-             <p>Professor Tiago Ventura </p>
+             <p>Helen Wang </p>
           </div>
   </div>
     
@@ -101,297 +130,864 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </div>
   
 
+
 </header>
+
 
 <section id="instructions" class="level2">
 <h2 class="anchored" data-anchor-id="instructions">Instructions</h2>
 <p>To complete this homework, you have two options.</p>
 <p>You can either complete this assignment using a <strong>dataset of your choice</strong>. This is a great opportunity for you to start working with a dataset that you can potentially use for your final project.</p>
-<p>Your second option is to use the tweets dataset we have used in class. You can download the dataset <a href="https://www.dropbox.com/scl/fi/l5rc7nptc23en7fj1halz/tweets_congress.csv?rlkey=joqnuldgh3xanx8y9h8wvkf8p&amp;dl=0">here</a></p>
+<p>Your second option is to this dataset of social media posts from political candidates running for Congress during the 2022 U.S. Midterm election.</p>
+<p>You can download the dataset <a href="https://www.dropbox.com/scl/fi/jz14130dlzj5xvca9txj4/midterm_candidates_labeled_all_May05.csv?rlkey=b0m1h6kk1af3uz9tjqyelthh3&amp;dl=0">here</a></p>
+<p>To know more about the dataset, read and cite this paper: <a href="https://journals.sagepub.com/doi/full/10.1177/20563051251337541" class="uri">https://journals.sagepub.com/doi/full/10.1177/20563051251337541</a></p>
+<p>If you want say thanks to the people who collected and shared this data with us for this class, please send a email to my colleague <a href="https://maggiegmacdonald.com/">Maggie MacDonald</a></p>
 <p><strong>IMPORTANT:</strong> Remember to NOT commit your data to github. Github does not allow you to push large datasets to remote repositories. If you commit your dataset, you will need to reset your commit, and that’s always a bit of work. In addition, remember that your notebook should be compiled with the results of the code blocks.</p>
+<p>Gen AI Use:</p>
+<p>ChatGPT was consulted to deal with memory issues related to calling multiple textstat_simil(). Code was edited in response to reduce memory use, main changes being computing only one similarity matrix rather than 10 (1 for each reference document) and to see which similarity measure would be more memory-efficient. Also was consulted for Q6.2 in regards of how to run KIWC.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">setwd</span>(<span class="st">"C:/Users/helen/OneDrive/Documents/Georgetown/F2025/text_analysis/problem-set-01-2025-helenw566/"</span>)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>pacman<span class="sc">::</span><span class="fu">p_load</span>(</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>  dplyr,</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>  purrr,</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>  tidyr,</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>  ggwordcloud,</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>  quanteda,</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>  quanteda.textstats,</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>  preText,</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>  tidytext,</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>  quanteda.sentiment,</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>  quanteda.dictionaries</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
 </section>
 <section id="question-1" class="level2">
 <h2 class="anchored" data-anchor-id="question-1">Question 1</h2>
-<p>Take a small a sample of your documents and read them carefully. This sample don’t need to be random. Select cases that are more interesting, and close to your theoretical interest in this dataset. What are you thoughts about these documents? What did you learn after reading them?</p>
+<p>Take a small a sample of your documents and read them carefully. This sample doesn’t need to be random. Select cases that are more interesting, and close to your theoretical interest in this dataset. What are you thoughts about these documents? What did you learn after reading them?</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Sample data</span></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">values =</span> <span class="fu">rnorm</span>(<span class="dv">100</span>))</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Create histogram</span></span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(data, <span class="fu">aes</span>(<span class="at">x =</span> values)) <span class="sc">+</span></span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">binwidth =</span> <span class="fl">0.5</span>, <span class="at">fill =</span> <span class="st">"blue"</span>, <span class="at">color =</span> <span class="st">"black"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<p><img src="problem_set_01_files/figure-html/unnamed-chunk-1-1.png" class="img-fluid" width="672"></p>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># read in file</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"data/midterm_candidates_labeled_all_May05.csv"</span>)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="co"># look at a random sample</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>df <span class="sc">%&gt;%</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice_sample</span>(<span class="at">n =</span> <span class="dv">25</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pull</span>(text)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> [1] "@scottbraddock He’s running for Governor and not King."                                                                                                                                                                                                                                                                                                                                                                              
+ [2] "Early vote today for #JenniferRuthGreen and tag us in your social media post to show your strong support! 💚 🇺🇸\nFind an early voting location near you at https://JRG.gop/vote! #IN01"                                                                                                                                                                                                                                               
+ [3] "Truth."                                                                                                                                                                                                                                                                                                                                                                                                                              
+ [4] "The district is frustrated with Bergman's dangerous rhetoric, divisive tactics and dishonest advertisements, but, when they go low, stay focused on the issues and hold your heads and 𝗼𝘂𝗿 signs high. \n\nGreat job in the field today, everyone. Beat Bergman at the polls. (3/3)"                                                                                                                                                 
+ [5] "Thanks to everyone who came out to blockwalk training at Comal GOP! #TX21 #StandUpForAmerica https://t.co/cIs9eFhGwu"                                                                                                                                                                                                                                                                                                                
+ [6] "Thank you 🫶🏼"                                                                                                                                                                                                                                                                                                                                                                                                                        
+ [7] "My mother would often tell me \"never forget who you are, where you come from, and the people who helped you get there.\" With your support, I stand recommitted to fighting for you each day.\n\nOur rights are on the ballot this election. Make your voice heard and VOTE! https://t.co/O3uHp04sCc"                                                                                                                               
+ [8] "I am looking forward representing the conservative values I was raised on as your Congressman in DC. \n\nThank you @NCValues Coalition for the endorsement! \n#ncpol #nc13 https://t.co/jyBrYAIt6Z"                                                                                                                                                                                                                                  
+ [9] "While other campaigns had multiple paid field staff on DC payroll, we had 1 and he moved mountains with our small but mighty team to make us one of the best producing field programs in the country.\n\nBut he and I both knew that to get us where we needed to be, we needed more. 18/"                                                                                                                                           
+[10] "Anyone with questions they'd like to ask during the debate at 7 p.m. on WTTW Thursday can send questions to Michael Puente Journalist and Tinisha Shade Spain. Tag #IllinoisSenateForum on Twitter!!"                                                                                                                                                                                                                                
+[11] "Excellent reporting by @CBSNews &amp;amp; @CBS_Herridge ⬇️ https://t.co/bdJKffmjAD"                                                                                                                                                                                                                                                                                                                                                       
+[12] "@MerissaHansen17 Yes, but are you willing to fight?"                                                                                                                                                                                                                                                                                                                                                                                 
+[13] "We are lost. https://t.co/tQKbY4UGwu"                                                                                                                                                                                                                                                                                                                                                                                                
+[14] "Los republicanos han presentado un plan para limitar la salud reproductiva en todo el país. Salazar votará al pie de la letra con sus amigos extremistas. En noviembre, le ganaré."                                                                                                                                                                                                                                                  
+[15] "Having a great time in @CityofDelRio enjoying some Fiesta de Amistad events!\n\nVoters in #VelVerdeCounty are ready to vote blue all the way through!\n\nThey want a U.S. Rep who shows up &amp;amp; is accessible to the public. \n\nI am committed to do so! 🇺🇸 https://t.co/ksfMMiQOkv"                                                                                                                                               
+[16] "Help me end the Pelosi Speakership. https://t.co/uHkKfl2lnN https://t.co/PzTfExTqO9"                                                                                                                                                                                                                                                                                                                                                 
+[17] "3️⃣0️⃣ Diners, 3️⃣0️⃣ Days!\n\nToday, I kicked off my 30 Diners in 30 Days tour at Main Street Station in Plymouth!\n\nIn the next month, I'll visit diners, restaurants and small businesses across New Hampshire to sit down with Granite Staters and discuss the issues they care about most. https://t.co/8Oma9jZe4Y"                                                                                                                    
+[18] "Thanks to the Palm Springs Firefighters Association Local 3601 for their support and keeping our community safe!"                                                                                                                                                                                                                                                                                                                    
+[19] "Little moment of levity. https://t.co/yvmmPJUbEb"                                                                                                                                                                                                                                                                                                                                                                                    
+[20] "An incredible evening in Sierra Vista! After my opponent cancelled attending our scheduled Cochise County debate tonight, #TeamCiscomani still showed up to knock doors and meet voters. While she continues to ignore rural Arizona, I remain committed to our entire district. #AZ06"                                                                                                                                              
+[21] "I want to thank Mississippi Insight for hosting me the other night as a guest. I enjoyed getting to discuss issues that matter most to voters in our district, like real leadership, good paying jobs, support for small businesses, and investments in education for our youth. Check out the full video here:"                                                                                                                     
+[22] "It's time to get organized and get your Souls to the Polls! Pick a great day for your organization, gather your crowd and get yourself to the polls to EARLY VOTE for #EmiliaSykesforCongress. To find your early vote center or neighborhood polling location, visit emiliasykesforcongress.com/the-district:=:https://www.emiliasykesforcongress.com/the-district and for more information email jasina@emiliasykesforcongress.com"
+[23] "Caption this 👇 https://t.co/CosBVNHN25"                                                                                                                                                                                                                                                                                                                                                                                              
+[24] "If you are in Boone, come on out! #ncpol  https://t.co/vRPY3gPApk"                                                                                                                                                                                                                                                                                                                                                                   
+[25] "The mainstream media LOVES Woke Dems who eat up all their propaganda. They NEVER think for themselves! STOP listening to their lies and go to REAL sources of information like TRUTH SOCIAL."                                                                                                                                                                                                                                        </code></pre>
 </div>
 </div>
+<p>The content of the documents seem to vary widely–while largely written with a political agenda in mind, the texts seem to include everything from descriptive statistics, personal attacks against select politicians, support for political allies, calls of action for specific agendas, dissemination of campaign ideals/logistics, personal social interactions, etc. As expected from social media data, there’s liberal use of hashtags, emojis, referencing to specific accounts, and links, which will have to be considered during preprocessing.</p>
 </section>
 <section id="question-2" class="level2">
 <h2 class="anchored" data-anchor-id="question-2">Question 2</h2>
 <p>Tokenize your documents and pre-process them, removing any “extraneous” content you noticed in closely reading a sample of your documents. What content have you removed and why? Any pre-processing steps from what you saw in class that you consider not to use here?</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>df_corpus <span class="ot">&lt;-</span> df <span class="sc">%&gt;%</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="co">#removing NA text</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(text)) <span class="sc">%&gt;%</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="co">#convert to corpus</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">corpus</span>(<span class="at">text_field =</span> <span class="st">"text"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>  <span class="co">#remove punctuation and numbers</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tokens</span>(</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">remove_punct =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">remove_numbers =</span> <span class="cn">TRUE</span>, </span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">verbose =</span> <span class="cn">TRUE</span></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>  <span class="co">#lowercase</span></span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tokens_tolower</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>  <span class="co">#remove stopwords</span></span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tokens_remove</span>(<span class="fu">stopwords</span>(<span class="st">"en"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>  <span class="co">#stemming</span></span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tokens_wordstem</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>  <span class="co">#convert to dfm</span></span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">dfm</span>() </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Creating a tokens from a corpus object...</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code> ...starting tokenization</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code> ...tokenizing 1 of 2 blocks</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code> ...preserving hyphens</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code> ...preserving elisions</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code> ...preserving social media tags (#, @)</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code> ...tokenizing 2 of 2 blocks</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code> ...preserving hyphens</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code> ...preserving elisions</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code> ...preserving social media tags (#, @)</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code> ...removing separators, punctuation, numbers </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code> ...174,893 unique types</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code> ...complete, elapsed time: 12.6 seconds.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Finished constructing tokens from 134,529 documents</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>df_corpus_trim <span class="ot">&lt;-</span> df_corpus <span class="sc">%&gt;%</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>  <span class="co">#trim for common and rare words</span></span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">dfm_trim</span>(<span class="at">min_docfreq =</span> <span class="fl">0.0005</span>,</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>             <span class="at">max_docfreq =</span> <span class="fl">0.99</span>,</span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>             <span class="at">docfreq_type =</span><span class="st">"prop"</span>, </span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>             <span class="at">verbose =</span> <span class="cn">TRUE</span>)  </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>dfm_trim() changed from 141,296 features (134,529 documents) to 3,619 features (134,529 documents)</code></pre>
+</div>
+</div>
+<p>In this case, I primarily removed punctuation, numbers, stop words, and also trimmed the document to remove common words and rare words. I also did some equivalence mapping via stemming. While removing symbols were an option, given that we’re working with social media data, I thought keep hashtags and <span class="citation" data-cites="s">@s</span> could allow us to retain important context so I retained those. I also avoid lemmatization as I already had conducted stemming and I did not want to reduce the complexity of the document too much by doing both. When trimming the document, I applied a much stricter bench mark for minimum document frequency versus maximum document frequency. While playing around with different options, I noticed that minimum document frequency appeared to play a more significant role in trimming (i.e.&nbsp;changing max_docfreq from 0.99 to 0.999 while holding min_docfreq constant had no effect while changing min_docfreq from 0.0001 to 0.0005 while holding max_docfreq constant led to a change from 9947 features to 3619). To reduce noise and to reduce computational expense, I took on a moderate approach to document trimming.</p>
 </section>
 <section id="question-3" class="level2">
 <h2 class="anchored" data-anchor-id="question-3">Question 3</h2>
 <p>Using <a href="https://github.com/matthewjdenny/preText">Danny and Spirling’s Pretext</a>, tell me which of the pre-processing steps makes a more substantive difference in the data transformation? Would you keep all these steps or would you follow the PreText recommendations? Use a sample of the data to solve this question.</p>
+<p>In this case, it appears “Remove Infrequent Terms” is the one that will lead to the most substantive differences when it comes to preprocessing, as it is the only one that is both (1) positive and (2) significantly different. The rest appear to result in nonsignificant differences. In this case, my approach largely conforms with preText’s analysis. I’m using largely the same preprocessing approach and I am also taking a moderate approach to removing infrequent terms. However, I would elect to still remove some infrequent terms (rather than avoid taking them out altogether) given the high dimensionality of the current dataset. Retaining all 141,296 tokens is impractical and too computationally expensive to really be a feasible option.</p>
 </section>
 <section id="question-4" class="level2">
 <h2 class="anchored" data-anchor-id="question-4">Question 4</h2>
 <p>Pick an important source of variation in your data (for example: date, author identity, location, etc.). Subset the data along this dimension, and discuss which words discriminate better each group. You can do this by using TF-IDF, PMI, log(share <span class="math inline">\(word_i\)</span> in group a/share <span class="math inline">\(word_i\)</span> in b), or create a measure similar to Ban’s article.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co">#checking options for variation</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>df_corpus_trim<span class="sc">@</span>docvars <span class="sc">%&gt;%</span> <span class="fu">colnames</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> [1] "docname_"         "docid_"           "segid_"           "X"               
+ [5] "created_at"       "username"         "name"             "platform"        
+ [9] "party_clean"      "office_type"      "office.name"      "gender"          
+[13] "incumbent."       "candidate.status" "wonprimary"       "vote"            
+[17] "participation"    "fundraising"      "audience"         "engagement"      
+[21] "election_denial"  "trump_endorsed"  </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="co">#using tf-idf so see which words discriminate better for each group</span></span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>tfidf_terms <span class="ot">&lt;-</span> df_corpus_trim <span class="sc">%&gt;%</span> </span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>  <span class="co">#performing tf-idf</span></span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">dfm_tfidf</span>(<span class="at">scheme_tf =</span> <span class="st">"prop"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>  <span class="co">#group by candidate status</span></span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">dfm_group</span>(candidate.status, <span class="at">force =</span> <span class="cn">TRUE</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a>  <span class="co">#convert and pivtot</span></span>
+<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">convert</span>(<span class="at">to =</span> <span class="st">"data.frame"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(</span>
+<span id="cb23-10"><a href="#cb23-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">cols =</span> <span class="sc">!</span>doc_id,</span>
+<span id="cb23-11"><a href="#cb23-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">names_to =</span> <span class="st">"word"</span>,</span>
+<span id="cb23-12"><a href="#cb23-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">values_to =</span> <span class="st">"tf_idf"</span></span>
+<span id="cb23-13"><a href="#cb23-13" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb23-14"><a href="#cb23-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">status =</span> doc_id) <span class="sc">%&gt;%</span> </span>
+<span id="cb23-15"><a href="#cb23-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(status) <span class="sc">%&gt;%</span></span>
+<span id="cb23-16"><a href="#cb23-16" aria-hidden="true" tabindex="-1"></a>  <span class="co">#check top 10 words</span></span>
+<span id="cb23-17"><a href="#cb23-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(tf_idf)) <span class="sc">%&gt;%</span></span>
+<span id="cb23-18"><a href="#cb23-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice_head</span>(<span class="at">n =</span> <span class="dv">10</span>)</span>
+<span id="cb23-19"><a href="#cb23-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-20"><a href="#cb23-20" aria-hidden="true" tabindex="-1"></a><span class="co">#plotting word clouds to visualize</span></span>
+<span id="cb23-21"><a href="#cb23-21" aria-hidden="true" tabindex="-1"></a>tfidf_terms <span class="sc">%&gt;%</span></span>
+<span id="cb23-22"><a href="#cb23-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(</span>
+<span id="cb23-23"><a href="#cb23-23" aria-hidden="true" tabindex="-1"></a>    <span class="at">label =</span> word, <span class="at">color =</span> tf_idf)</span>
+<span id="cb23-24"><a href="#cb23-24" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">+</span></span>
+<span id="cb23-25"><a href="#cb23-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text_wordcloud</span>()  <span class="sc">+</span></span>
+<span id="cb23-26"><a href="#cb23-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb23-27"><a href="#cb23-27" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>status) <span class="sc">+</span></span>
+<span id="cb23-28"><a href="#cb23-28" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Most Common Words by Election Denial Status"</span>) <span class="sc">+</span></span>
+<span id="cb23-29"><a href="#cb23-29" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
+<span id="cb23-30"><a href="#cb23-30" aria-hidden="true" tabindex="-1"></a>    <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">"bold"</span>, <span class="at">hjust =</span> <span class="fl">0.5</span>)</span>
+<span id="cb23-31"><a href="#cb23-31" aria-hidden="true" tabindex="-1"></a>  ) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="problem_set_01_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Here, I’m using “Candidate Status” as source of variation. We see that those who were on the ballot appear to be using language more centered on spurring voters to vote, notably having multiple references to “elect”, “day”, and “vote.” It also seemed to cater more towards thanking voters for their support. In contrast, candidates that were not on the ballot appeared more likely to use language centered around some kind of announcement, notably “announce” and the most common words seem to suggest that their declaration was tied to removing someone from office or “trump”, either as a result of his endorsement or otherwise.</p>
 </section>
 <section id="question-5" class="level2">
 <h2 class="anchored" data-anchor-id="question-5">Question 5</h2>
 <p>Create a dictionary (or use a pre-existing dictionary) to measure a topic of interest in your data. It can be anything, sentiment, tone, misinformation, any topic of interest. Label your documents, and visualize the prevalence of your classes.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co">#adding sentiment scores</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>sentiment_doc <span class="ot">&lt;-</span> <span class="fu">docvars</span>(df_corpus_trim) <span class="sc">%&gt;%</span> </span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>  <span class="co">#adding document id</span></span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">doc_id =</span> <span class="fu">docnames</span>(df_corpus_trim)) <span class="sc">%&gt;%</span></span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>  <span class="co">#adding dictionary counts</span></span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">merge</span>(</span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a>    df_corpus_trim <span class="sc">%&gt;%</span> </span>
+<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a>      <span class="fu">dfm_lookup</span>(<span class="at">dictionary =</span> data_dictionary_LSD2015[<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>]) <span class="sc">%&gt;%</span> </span>
+<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a>      <span class="fu">convert</span>(<span class="at">to =</span> <span class="st">"data.frame"</span>),</span>
+<span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">by =</span> <span class="st">"doc_id"</span></span>
+<span id="cb24-11"><a href="#cb24-11" aria-hidden="true" tabindex="-1"></a>  ) </span>
+<span id="cb24-12"><a href="#cb24-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-13"><a href="#cb24-13" aria-hidden="true" tabindex="-1"></a>sentiment_doc <span class="sc">%&gt;%</span></span>
+<span id="cb24-14"><a href="#cb24-14" aria-hidden="true" tabindex="-1"></a>  <span class="co">#determining top sentiment</span></span>
+<span id="cb24-15"><a href="#cb24-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb24-16"><a href="#cb24-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">major_sentiment =</span> <span class="fu">ifelse</span>(</span>
+<span id="cb24-17"><a href="#cb24-17" aria-hidden="true" tabindex="-1"></a>      positive <span class="sc">&gt;</span> negative, <span class="st">"Positive"</span>, <span class="fu">ifelse</span>(</span>
+<span id="cb24-18"><a href="#cb24-18" aria-hidden="true" tabindex="-1"></a>        negative <span class="sc">&gt;</span> positive, <span class="st">"Negative"</span>, <span class="st">"Neutral"</span></span>
+<span id="cb24-19"><a href="#cb24-19" aria-hidden="true" tabindex="-1"></a>      )</span>
+<span id="cb24-20"><a href="#cb24-20" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb24-21"><a href="#cb24-21" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb24-22"><a href="#cb24-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(major_sentiment) <span class="sc">%&gt;%</span></span>
+<span id="cb24-23"><a href="#cb24-23" aria-hidden="true" tabindex="-1"></a>  <span class="co">#counting documents by sentiment</span></span>
+<span id="cb24-24"><a href="#cb24-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">count =</span> <span class="fu">n</span>()) <span class="sc">%&gt;%</span></span>
+<span id="cb24-25"><a href="#cb24-25" aria-hidden="true" tabindex="-1"></a>  <span class="co">#plotting</span></span>
+<span id="cb24-26"><a href="#cb24-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>() <span class="sc">+</span></span>
+<span id="cb24-27"><a href="#cb24-27" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="fu">aes</span>(<span class="at">x =</span> major_sentiment, <span class="at">y =</span> count, <span class="at">fill =</span> major_sentiment), <span class="at">alpha =</span> <span class="fl">0.7</span>) <span class="sc">+</span></span>
+<span id="cb24-28"><a href="#cb24-28" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb24-29"><a href="#cb24-29" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Major Sentiment"</span>,</span>
+<span id="cb24-30"><a href="#cb24-30" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Count"</span>,</span>
+<span id="cb24-31"><a href="#cb24-31" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Major Sentiment across Social Media Posts by Count"</span>,</span>
+<span id="cb24-32"><a href="#cb24-32" aria-hidden="true" tabindex="-1"></a>    <span class="at">subtitle =</span> <span class="st">"2022 Midterm Elections"</span>,</span>
+<span id="cb24-33"><a href="#cb24-33" aria-hidden="true" tabindex="-1"></a>    <span class="at">fill =</span> <span class="st">"Sentiment"</span></span>
+<span id="cb24-34"><a href="#cb24-34" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb24-35"><a href="#cb24-35" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="problem_set_01_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
 </section>
 <section id="question-6" class="level2">
 <h2 class="anchored" data-anchor-id="question-6">Question 6</h2>
 <p>Pick some documents (at least 10 for each class) that are exemplar (high probability) of being for each class of your dictionary. Read these documents. Now let’s try to augment a little your classifier.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">88</span>)</span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a><span class="co">#get documents with high prob</span></span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>sample_sent <span class="ot">&lt;-</span> sentiment_doc <span class="sc">%&gt;%</span></span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>  <span class="co">#only getting documents with one sentiment and high counts for it</span></span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>((positive <span class="sc">==</span> <span class="dv">0</span> <span class="sc">|</span> negative <span class="sc">==</span> <span class="dv">0</span>) <span class="sc">&amp;</span> <span class="sc">!</span>(positive <span class="sc">==</span> <span class="dv">0</span> <span class="sc">&amp;</span> negative <span class="sc">==</span> <span class="dv">0</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">total =</span>  positive <span class="sc">+</span> negative) <span class="sc">%&gt;%</span></span>
+<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(total <span class="sc">&gt;</span> <span class="dv">5</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb25-9"><a href="#cb25-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(</span>
+<span id="cb25-10"><a href="#cb25-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">cols =</span> <span class="fu">c</span>(<span class="st">"positive"</span>, <span class="st">"negative"</span>),</span>
+<span id="cb25-11"><a href="#cb25-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">names_to =</span> <span class="st">"class"</span></span>
+<span id="cb25-12"><a href="#cb25-12" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span> </span>
+<span id="cb25-13"><a href="#cb25-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(value <span class="sc">!=</span> <span class="dv">0</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb25-14"><a href="#cb25-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(class) <span class="sc">%&gt;%</span></span>
+<span id="cb25-15"><a href="#cb25-15" aria-hidden="true" tabindex="-1"></a>  <span class="co">#randomly select 10 for each class</span></span>
+<span id="cb25-16"><a href="#cb25-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice_sample</span>(<span class="at">n =</span> <span class="dv">10</span>) </span>
+<span id="cb25-17"><a href="#cb25-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-18"><a href="#cb25-18" aria-hidden="true" tabindex="-1"></a><span class="co">#retrieve original text </span></span>
+<span id="cb25-19"><a href="#cb25-19" aria-hidden="true" tabindex="-1"></a>sample_text <span class="ot">&lt;-</span> df <span class="sc">%&gt;%</span> </span>
+<span id="cb25-20"><a href="#cb25-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">merge</span>(</span>
+<span id="cb25-21"><a href="#cb25-21" aria-hidden="true" tabindex="-1"></a>    sample_sent, </span>
+<span id="cb25-22"><a href="#cb25-22" aria-hidden="true" tabindex="-1"></a>    <span class="at">by =</span> <span class="st">"X"</span>,</span>
+<span id="cb25-23"><a href="#cb25-23" aria-hidden="true" tabindex="-1"></a>    <span class="at">all.y =</span> T</span>
+<span id="cb25-24"><a href="#cb25-24" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb25-25"><a href="#cb25-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(class, doc_id, X, text) </span>
+<span id="cb25-26"><a href="#cb25-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-27"><a href="#cb25-27" aria-hidden="true" tabindex="-1"></a>sample_text <span class="sc">%&gt;%</span> <span class="fu">pull</span>(text)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> [1] "The Early Voting polls are still open for another week before Election Day on Nov. 8th! 🔴 As a Green Beret Veteran, a business owner, and a father, I know the important part Washington politics plays in all of our lives. I believe it is time we have truth and dignity in the House, not just political games or government overreach. I will work to end our continued inflation, strengthen our National Security, and get us closer to Energy Independence, because all Americans deserve better. Learn more about my plans for Congress here ↙️ https://www.harriganforcongress.com/"                                                                                        
+ [2] "This is a must read; \"Crime in 2020 was 60% lower than in 1980. The crime rate began consistently declining in the early 1990s and fell every year between 2001 and 2020. Both property and violent crimes reflect this long-term trend of decreasing crime. Property crime is down 63% since 1980, and violent crime is down 33%. Property crime per 100,000 people ranged from 1,460 in New York City to 6,128 in Memphis...Violent crime decreased since 1991 in 39 states and Washington, DC. It declined by more than 60% in New Jersey, New York, Florida, and Connecticut. Meanwhile, the violent crime rate more than doubled in North Dakota, Montana, and South Dakota.\""
+ [3] "Thank you for your courage and for putting your country first. Thank you for protecting our country, for your bravery, and for all that you do and have done to make this country safe. Wishing you a very Happy Veteran's day! #VeteransDay #VeteransDay2022"                                                                                                                                                                                                                                                                                                                                                                                                                       
+ [4] "Denise and I had such a great night visiting with so many friends and neighbors at the Bartholomew County Republicans Fall Dinner! 🇺🇸 \n\nOur local county parties are vital to the GOP’s success, and that’s why I’m always happy to lend a helping hand in their mission to elect Republicans up and down the ticket. \n\nRemember to get out and VOTE on November 8th! 🗳"                                                                                                                                                                                                                                                                                                         
+ [5] "Roberta and I are extremely grateful for the support and friendship across the 8th District of Tennessee. \n\nIt is our greatest honor to serve this great state we all call home.\n\nThank you for your trust in us."                                                                                                                                                                                                                                                                                                                                                                                                                                                               
+ [6] "Happy Veterans Day! #NY21 is home to the largest number of veterans of any Congressional District in NY. I was honored to participate in today’s ceremony dedicating the Essex County Leathernecks Marine Corps League Monument in Crown Point! We thank &amp; honor all of our veterans!🇺🇸"                                                                                                                                                                                                                                                                                                                                                                                             
+ [7] "The horrifying attack on Paul Pelosi is the result of extremist rhetoric that threatens both our democracy and the lives &amp;amp; families of those who step up to serve. Everyone--on both sides of the aisle--must condemn the conspiracy theories that motivate these assaults."                                                                                                                                                                                                                                                                                                                                                                                                     
+ [8] "Alaskans voted for a better future, one where our fisheries are rehabilitated, our rights are preserved, and our families can afford to not only survive, but thrive. I’m happy they did. Now it’s time to make that a reality."                                                                                                                                                                                                                                                                                                                                                                                                                                                     
+ [9] "Yvette Herrell and her friends can’t defend her awful record in Congress, so they’re doing what they do best - lying to get ahead. So here’s the truth. Let’s win #NM02 and elect a real champion for the working class. https://t.co/c4hShu5yYu"                                                                                                                                                                                                                                                                                                                                                                                                                                    
+[10] "Thank you to everyone who made last night’s event at Georgia Blue Gallery so special! \n\nThank you to Georgia for hosting us, thank you to Byron Nicholai for your beautiful performance, and thank you to the artists who shared their art with us. #MaryForCongress https://t.co/9l6joOizMy"                                                                                                                                                                                                                                                                                                                                                                                      
+[11] "No, any American except a sitting member of the US House or Senate can be indicted for war crimes if they commit one or more war crimes. But the worst war crime is aggression, and I focus on that. Presidents, Secretaries of State &amp;amp; \"Defense\", and judges.\nhttps://t.co/7riUJPharR https://t.co/8iweaELc6X"                                                                                                                                                                                                                                                                                                                                                               
+[12] "I have no idea how many presidents must be impeached &amp;amp; removed for war crimes before the lesson finally sinks in: become the president, refuse to stop ongoing, illegal, immoral wars of aggression, get impeached &amp;amp; removed. Maybe it'll take only 2 or 3 presidents before they get it https://t.co/xoyzfX90Lh"                                                                                                                                                                                                                                                                                                                                                            
+[13] "Thank you Narragansett Dems for supporting great candidates who care about working people. \n\nOil and drug companies might be trying to buy Allan Fung a congressional seat, but with your help we’ll keep #CD2 blue! https://t.co/9xt7wfwwh8"                                                                                                                                                                                                                                                                                                                                                                                                                                      
+[14] "Any dealmaking with this terrorist regime should be permanently dead.\n\nIran is funding terrorism across the globe, giving missiles &amp;amp; drones to Putin to commit war crimes in Ukraine, plotting to assassinate American officials, and murdering its own children, women &amp;amp; men. #alsen https://t.co/3YuBVUp47C"                                                                                                                                                                                                                                                                                                                                                             
+[15] "@jackieraimo @Schneider4IL10 @MomsDemand @JudgeRochford @VoteJoyceMason @VoteVega22 @Carissa4LCB7 @RepSchneider Brads afraid to debate because of the truth.Careful who you endorse. I’ve fought for Moms, children and community. Brad looks to profit off pain and didn’t solve any problems. His sister in law shot up a school and he still has no empathy for gun violence victims. \n#loridann"                                                                                                                                                                                                                                                                                
+[16] ".@kdeleon continues to downplay his anti-Black, racist words &amp;amp; actions. He purposely distracts from their ploy to disenfranchise Black Angelenos.\n\nThis wasn’t just “condoning racist language,” it is blatant racism backed by racist policy.\nNow, more than ever, KDL must RESIGN. https://t.co/gFzo91YeTW"                                                                                                                                                                                                                                                                                                                                                                 
+[17] "Wishing you all a Happy Thanksgiving-a day of reflection to count our blessings with gratitude! I’m especially thankful for my family, friends &amp;amp; the many constituents I’ve come to know over the years who have made me a stronger, more dedicated public servant. God bless &amp;amp; enjoy! https://t.co/MmM6Z900Gd"                                                                                                                                                                                                                                                                                                                                                              
+[18] "The government of Venezuela is deliberately releasing prisoners – including violent criminals convicted of murder and rape. Those same freed prisoners are in the illegal immigrant caravans marching to our border. https://t.co/jBfb7yc9tG"                                                                                                                                                                                                                                                                                                                                                                                                                                        
+[19] "Ilhan Omar cannot be allowed to return to congress! She has left us helpless! Our city is worse off than when she was elected! Look at the rampant crime, homelessness, and poverty invading our streets! She could have fixed these problems for our district, but she abandoned us! https://t.co/7QbiXIJs79"                                                                                                                                                                                                                                                                                                                                                                       
+[20] "I’m praying for Paul Pelosi and condemn violence against anyone, no matter who does it. After having my volunteers get assaulted and my family members’ lives threatened, I am disgusted by this violent attack.&nbsp;We need to hold these individuals accountable... https://t.co/ZDgDq0KLLB"                                                                                                                                                                                                                                                                                                                                                                                           </code></pre>
+</div>
+</div>
 <section id="question-6.1" class="level3">
 <h3 class="anchored" data-anchor-id="question-6.1">Question 6.1</h3>
 <p>Using cosine similarity, grab the closest 10 documents to each reference document you read before. Read those. How well does the cosine similarity work? Try with another measure of distance. Anything interesting there?</p>
+<section id="cosine" class="level5">
+<h5 class="anchored" data-anchor-id="cosine">Cosine</h5>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="co">#computing cosine similarity in ref to docs</span></span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>closest_docs <span class="ot">&lt;-</span> <span class="fu">textstat_simil</span>(</span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>    df_corpus_trim, </span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> df_corpus_trim[sample_sent<span class="sc">$</span>doc_id,],</span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">margin =</span> <span class="st">"documents"</span>,</span>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">method =</span> <span class="st">"cosine"</span></span>
+<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as.data.frame</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb27-9"><a href="#cb27-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(document2) <span class="sc">%&gt;%</span></span>
+<span id="cb27-10"><a href="#cb27-10" aria-hidden="true" tabindex="-1"></a>  <span class="co">#take the top closest docs</span></span>
+<span id="cb27-11"><a href="#cb27-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(cosine)) <span class="sc">%&gt;%</span></span>
+<span id="cb27-12"><a href="#cb27-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice_head</span>(<span class="at">n =</span> <span class="dv">10</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb27-13"><a href="#cb27-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(</span>
+<span id="cb27-14"><a href="#cb27-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">doc =</span> document1,</span>
+<span id="cb27-15"><a href="#cb27-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">ref_doc =</span> document2,</span>
+<span id="cb27-16"><a href="#cb27-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">cosine =</span> cosine</span>
+<span id="cb27-17"><a href="#cb27-17" aria-hidden="true" tabindex="-1"></a>  ) </span>
+<span id="cb27-18"><a href="#cb27-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-19"><a href="#cb27-19" aria-hidden="true" tabindex="-1"></a><span class="co">#add text and doc to docvars</span></span>
+<span id="cb27-20"><a href="#cb27-20" aria-hidden="true" tabindex="-1"></a><span class="fu">docvars</span>(df_corpus_trim, <span class="st">"text"</span>) <span class="ot">&lt;-</span> df[df<span class="sc">$</span>X <span class="sc">%in%</span> <span class="fu">docvars</span>(df_corpus_trim)<span class="sc">$</span>X, <span class="st">"text"</span>]</span>
+<span id="cb27-21"><a href="#cb27-21" aria-hidden="true" tabindex="-1"></a><span class="fu">docvars</span>(df_corpus_trim, <span class="st">"doc"</span>) <span class="ot">&lt;-</span> df_corpus_trim<span class="sc">@</span>Dimnames[<span class="st">"docs"</span>]</span>
+<span id="cb27-22"><a href="#cb27-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-23"><a href="#cb27-23" aria-hidden="true" tabindex="-1"></a><span class="co">#add text</span></span>
+<span id="cb27-24"><a href="#cb27-24" aria-hidden="true" tabindex="-1"></a>closest_docs <span class="sc">%&gt;%</span></span>
+<span id="cb27-25"><a href="#cb27-25" aria-hidden="true" tabindex="-1"></a>  <span class="co">#adding text</span></span>
+<span id="cb27-26"><a href="#cb27-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">merge</span>(</span>
+<span id="cb27-27"><a href="#cb27-27" aria-hidden="true" tabindex="-1"></a>    <span class="fu">docvars</span>(df_corpus_trim) <span class="sc">%&gt;%</span> <span class="fu">select</span>(doc, text),</span>
+<span id="cb27-28"><a href="#cb27-28" aria-hidden="true" tabindex="-1"></a>    <span class="at">by =</span> <span class="st">"doc"</span></span>
+<span id="cb27-29"><a href="#cb27-29" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span> </span>
+<span id="cb27-30"><a href="#cb27-30" aria-hidden="true" tabindex="-1"></a>  <span class="co">#adding reference text</span></span>
+<span id="cb27-31"><a href="#cb27-31" aria-hidden="true" tabindex="-1"></a>  <span class="fu">merge</span>(</span>
+<span id="cb27-32"><a href="#cb27-32" aria-hidden="true" tabindex="-1"></a>    sample_text <span class="sc">%&gt;%</span> <span class="fu">rename</span>(<span class="at">ref_doc =</span> doc_id, <span class="at">ref_text =</span> text), </span>
+<span id="cb27-33"><a href="#cb27-33" aria-hidden="true" tabindex="-1"></a>    <span class="at">by =</span> <span class="st">"ref_doc"</span>,</span>
+<span id="cb27-34"><a href="#cb27-34" aria-hidden="true" tabindex="-1"></a>    <span class="at">all.x =</span> T</span>
+<span id="cb27-35"><a href="#cb27-35" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span> </span>
+<span id="cb27-36"><a href="#cb27-36" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(class, ref_doc, ref_text, doc, text) <span class="sc">%&gt;%</span> <span class="fu">View</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Using cosine similarity, it appears that the top 10 most similar documents generally appear to have similar sentiments and/or matching topics to the original reference document. This appears somewhat dependent on the overall “extremism” of the original reference document. Reference document that appears more obvious positive or sentiment seem more likely to have “similar” documents that have matching sentiments. Similarly, reference documents that seem clearly about a specific topic appear to be more likely to have matching content across their “similar” documents. In contrast, reference documents that might use more common words or are more neutral in sentiment, seem to vary a lot in terms of their “similar documents.” In those cases, the similarities are harder to identify. Neither the content, tone, or overall sentiment seemed similar at first glance. For example, one reference document containing critiques on a specific politician was notably said to be “similar” to other documents that were notably more positive in sentiment–containing documents thanking constituents for their support. What is similar about these documents is not obviously apparent.</p>
+</section>
+<section id="correlation" class="level5">
+<h5 class="anchored" data-anchor-id="correlation">Correlation</h5>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="co">#computing correlation in ref to docs</span></span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>closest_docs_cor <span class="ot">&lt;-</span> <span class="fu">textstat_simil</span>(</span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>    df_corpus_trim, </span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> df_corpus_trim[sample_sent<span class="sc">$</span>doc_id,],</span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">margin =</span> <span class="st">"documents"</span>,</span>
+<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">method =</span> <span class="st">"correlation"</span></span>
+<span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb28-8"><a href="#cb28-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as.data.frame</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb28-9"><a href="#cb28-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(document2) <span class="sc">%&gt;%</span></span>
+<span id="cb28-10"><a href="#cb28-10" aria-hidden="true" tabindex="-1"></a>  <span class="co">#take the top closest docs</span></span>
+<span id="cb28-11"><a href="#cb28-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(correlation)) <span class="sc">%&gt;%</span></span>
+<span id="cb28-12"><a href="#cb28-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice_head</span>(<span class="at">n =</span> <span class="dv">10</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb28-13"><a href="#cb28-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(</span>
+<span id="cb28-14"><a href="#cb28-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">doc =</span> document1,</span>
+<span id="cb28-15"><a href="#cb28-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">ref_doc =</span> document2,</span>
+<span id="cb28-16"><a href="#cb28-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">correlation =</span> correlation</span>
+<span id="cb28-17"><a href="#cb28-17" aria-hidden="true" tabindex="-1"></a>  ) </span>
+<span id="cb28-18"><a href="#cb28-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-19"><a href="#cb28-19" aria-hidden="true" tabindex="-1"></a><span class="co">#add text</span></span>
+<span id="cb28-20"><a href="#cb28-20" aria-hidden="true" tabindex="-1"></a>closest_docs_cor <span class="sc">%&gt;%</span></span>
+<span id="cb28-21"><a href="#cb28-21" aria-hidden="true" tabindex="-1"></a>  <span class="co">#add text</span></span>
+<span id="cb28-22"><a href="#cb28-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">merge</span>(</span>
+<span id="cb28-23"><a href="#cb28-23" aria-hidden="true" tabindex="-1"></a>    <span class="fu">docvars</span>(df_corpus_trim) <span class="sc">%&gt;%</span> <span class="fu">select</span>(doc, text),</span>
+<span id="cb28-24"><a href="#cb28-24" aria-hidden="true" tabindex="-1"></a>    <span class="at">by =</span> <span class="st">"doc"</span></span>
+<span id="cb28-25"><a href="#cb28-25" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span> </span>
+<span id="cb28-26"><a href="#cb28-26" aria-hidden="true" tabindex="-1"></a>  <span class="co">#add ref text</span></span>
+<span id="cb28-27"><a href="#cb28-27" aria-hidden="true" tabindex="-1"></a>  <span class="fu">merge</span>(</span>
+<span id="cb28-28"><a href="#cb28-28" aria-hidden="true" tabindex="-1"></a>    sample_text <span class="sc">%&gt;%</span> <span class="fu">rename</span>(<span class="at">ref_doc =</span> doc_id, <span class="at">ref_text =</span> text), </span>
+<span id="cb28-29"><a href="#cb28-29" aria-hidden="true" tabindex="-1"></a>    <span class="at">by =</span> <span class="st">"ref_doc"</span>,</span>
+<span id="cb28-30"><a href="#cb28-30" aria-hidden="true" tabindex="-1"></a>    <span class="at">all.x =</span> T</span>
+<span id="cb28-31"><a href="#cb28-31" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span> </span>
+<span id="cb28-32"><a href="#cb28-32" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(class, ref_doc, ref_text, doc, text) <span class="sc">%&gt;%</span> <span class="fu">View</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Here, I utilized correlation as an alternative measure of similarity. The results seem comparable with cosine similarity, with many of the same documents being listed as similar. Correlation introduces some new documents and omits others that cosine similarity had marked as similar but the new inclusions overall seem obvious in why they were considered similar. While some new additions are dubious, there are no more dubious than the one’s marked similar via cosine similarity.</p>
+</section>
 </section>
 <section id="question-6.2" class="level3">
 <h3 class="anchored" data-anchor-id="question-6.2">Question 6.2</h3>
-<p>Now, check qualitative these documents. Take a look at the top features, Keyword in Context, Higher TF-IDF. Would you change anything in your dictionary now that you looked in these documents?</p>
+<p>Now, check qualitative these documents. Take a look at the top features, keyword in Context, higher TF-IDF. Would you change anything in your dictionary now that you looked in these documents?</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="co">#check top features</span></span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>topfeat <span class="ot">&lt;-</span> <span class="fu">dfm_subset</span>(df_corpus_trim, <span class="at">subset =</span> <span class="fu">docnames</span>(df_corpus_trim) <span class="sc">%in%</span> closest_docs<span class="sc">$</span>doc) <span class="sc">%&gt;%</span> <span class="fu">topfeatures</span>()</span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a>topfeat</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  thank     amp    vote   crime  famili     day veteran     war     get      us 
+     69      56      53      52      46      42      41      40      39      39 </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="co">#tf-idf</span></span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a><span class="fu">dfm_subset</span>(df_corpus_trim, <span class="at">subset =</span> <span class="fu">docnames</span>(df_corpus_trim) <span class="sc">%in%</span> closest_docs<span class="sc">$</span>doc) <span class="sc">%&gt;%</span></span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">dfm_tfidf</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">topfeatures</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>       amp      crime    veteran        war       vote      thank republican 
+  46.59582   41.04444   40.73089   39.73745   39.12268   38.23314   37.59221 
+    pelosi     counti        day 
+  36.37178   35.41569   33.15128 </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="co">#keywords in context</span></span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>kic <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(<span class="fu">matrix</span>(<span class="at">ncol =</span> <span class="dv">7</span>, <span class="at">nrow =</span> <span class="dv">0</span>))</span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (word <span class="cf">in</span> <span class="fu">names</span>(topfeat)) {</span>
+<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a>  <span class="co">#corpus of the similar documents, tokenize to meet kwic requirements</span></span>
+<span id="cb33-6"><a href="#cb33-6" aria-hidden="true" tabindex="-1"></a>  temp_corpus <span class="ot">&lt;-</span> <span class="fu">corpus</span>(<span class="fu">docvars</span>(<span class="fu">dfm_subset</span>(df_corpus_trim, <span class="at">subset =</span> <span class="fu">docnames</span>(df_corpus_trim) <span class="sc">%in%</span> closest_docs<span class="sc">$</span>doc))<span class="sc">$</span>text) <span class="sc">%&gt;%</span> </span>
+<span id="cb33-7"><a href="#cb33-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">tokens</span>(<span class="at">remove_punct =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb33-8"><a href="#cb33-8" aria-hidden="true" tabindex="-1"></a>           <span class="at">remove_numbers =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb33-9"><a href="#cb33-9" aria-hidden="true" tabindex="-1"></a>  <span class="co">#compute kiwc</span></span>
+<span id="cb33-10"><a href="#cb33-10" aria-hidden="true" tabindex="-1"></a>  context <span class="ot">&lt;-</span> <span class="fu">kwic</span>(temp_corpus, <span class="at">pattern =</span> word, <span class="at">window =</span> <span class="dv">5</span>)</span>
+<span id="cb33-11"><a href="#cb33-11" aria-hidden="true" tabindex="-1"></a>  <span class="co">#add to df</span></span>
+<span id="cb33-12"><a href="#cb33-12" aria-hidden="true" tabindex="-1"></a>  kic <span class="ot">&lt;-</span> <span class="fu">rbind</span>(kic, context)</span>
+<span id="cb33-13"><a href="#cb33-13" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb33-14"><a href="#cb33-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-15"><a href="#cb33-15" aria-hidden="true" tabindex="-1"></a>kic <span class="sc">%&gt;%</span> <span class="fu">head</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Keyword-in-context with 6 matches.                                                         
+  [text1, 1]                                    | Thank |
+  [text2, 1]                                    | Thank |
+  [text3, 1]                                    | Thank |
+ [text3, 16]    Georgia Blue Gallery so special | Thank |
+ [text3, 23]          to Georgia for hosting us | thank |
+ [text3, 33] for your beautiful performance and | thank |
+                           
+ you Diana                 
+ you#BasaltCO              
+ you to everyone who made  
+ you to Georgia for hosting
+ you to Byron Nicholai for 
+ you to the artists who    </code></pre>
+</div>
+</div>
+<p>I would consider integrating some of the top features into the dictionary. While some words, such as “crime” are already marked as “negative sentiment” in the dictionary, words such as “famili” and its equivalents are not. Given its frequency and importance, future sentiment analyses using this dataset should consider it when labeling sentiments.</p>
 </section>
 </section>
 
 </main>
 <!-- /main column -->
 <script id="quarto-html-after-body" type="application/javascript">
-window.document.addEventListener("DOMContentLoaded", function (event) {
-  const toggleBodyColorMode = (bsSheetEl) => {
-    const mode = bsSheetEl.getAttribute("data-mode");
-    const bodyEl = window.document.querySelector("body");
-    if (mode === "dark") {
-      bodyEl.classList.add("quarto-dark");
-      bodyEl.classList.remove("quarto-light");
-    } else {
-      bodyEl.classList.add("quarto-light");
-      bodyEl.classList.remove("quarto-dark");
-    }
-  }
-  const toggleBodyColorPrimary = () => {
-    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
-    if (bsSheetEl) {
-      toggleBodyColorMode(bsSheetEl);
-    }
-  }
-  toggleBodyColorPrimary();  
-  const icon = "";
-  const anchorJS = new window.AnchorJS();
-  anchorJS.options = {
-    placement: 'right',
-    icon: icon
-  };
-  anchorJS.add('.anchored');
-  const isCodeAnnotation = (el) => {
-    for (const clz of el.classList) {
-      if (clz.startsWith('code-annotation-')) {                     
-        return true;
-      }
-    }
-    return false;
-  }
-  const clipboard = new window.ClipboardJS('.code-copy-button', {
-    text: function(trigger) {
-      const codeEl = trigger.previousElementSibling.cloneNode(true);
-      for (const childEl of codeEl.children) {
-        if (isCodeAnnotation(childEl)) {
-          childEl.remove();
-        }
-      }
-      return codeEl.innerText;
-    }
-  });
-  clipboard.on('success', function(e) {
-    // button target
-    const button = e.trigger;
-    // don't keep focus
-    button.blur();
-    // flash "checked"
-    button.classList.add('code-copy-button-checked');
-    var currentTitle = button.getAttribute("title");
-    button.setAttribute("title", "Copied!");
-    let tooltip;
-    if (window.bootstrap) {
-      button.setAttribute("data-bs-toggle", "tooltip");
-      button.setAttribute("data-bs-placement", "left");
-      button.setAttribute("data-bs-title", "Copied!");
-      tooltip = new bootstrap.Tooltip(button, 
-        { trigger: "manual", 
-          customClass: "code-copy-button-tooltip",
-          offset: [0, -8]});
-      tooltip.show();    
-    }
-    setTimeout(function() {
-      if (tooltip) {
-        tooltip.hide();
-        button.removeAttribute("data-bs-title");
-        button.removeAttribute("data-bs-toggle");
-        button.removeAttribute("data-bs-placement");
-      }
-      button.setAttribute("title", currentTitle);
-      button.classList.remove('code-copy-button-checked');
-    }, 1000);
-    // clear code selection
-    e.clearSelection();
-  });
-  function tippyHover(el, contentFn) {
-    const config = {
-      allowHTML: true,
-      content: contentFn,
-      maxWidth: 500,
-      delay: 100,
-      arrow: false,
-      appendTo: function(el) {
-          return el.parentElement;
-      },
-      interactive: true,
-      interactiveBorder: 10,
-      theme: 'quarto',
-      placement: 'bottom-start'
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
     };
-    window.tippy(el, config); 
-  }
-  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
-  for (var i=0; i<noterefs.length; i++) {
-    const ref = noterefs[i];
-    tippyHover(ref, function() {
-      // use id or data attribute instead here
-      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
-      try { href = new URL(href).hash; } catch {}
-      const id = href.replace(/^#\/?/, "");
-      const note = window.document.getElementById(id);
-      return note.innerHTML;
-    });
-  }
-      let selectedAnnoteEl;
-      const selectorForAnnotation = ( cell, annotation) => {
-        let cellAttr = 'data-code-cell="' + cell + '"';
-        let lineAttr = 'data-code-annotation="' +  annotation + '"';
-        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
-        return selector;
-      }
-      const selectCodeLines = (annoteEl) => {
-        const doc = window.document;
-        const targetCell = annoteEl.getAttribute("data-target-cell");
-        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
-        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
-        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
-        const lineIds = lines.map((line) => {
-          return targetCell + "-" + line;
-        })
-        let top = null;
-        let height = null;
-        let parent = null;
-        if (lineIds.length > 0) {
-            //compute the position of the single el (top and bottom and make a div)
-            const el = window.document.getElementById(lineIds[0]);
-            top = el.offsetTop;
-            height = el.offsetHeight;
-            parent = el.parentElement.parentElement;
-          if (lineIds.length > 1) {
-            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
-            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
-            height = bottom - top;
-          }
-          if (top !== null && height !== null && parent !== null) {
-            // cook up a div (if necessary) and position it 
-            let div = window.document.getElementById("code-annotation-line-highlight");
-            if (div === null) {
-              div = window.document.createElement("div");
-              div.setAttribute("id", "code-annotation-line-highlight");
-              div.style.position = 'absolute';
-              parent.appendChild(div);
-            }
-            div.style.top = top - 2 + "px";
-            div.style.height = height + 4 + "px";
-            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
-            if (gutterDiv === null) {
-              gutterDiv = window.document.createElement("div");
-              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
-              gutterDiv.style.position = 'absolute';
-              const codeCell = window.document.getElementById(targetCell);
-              const gutter = codeCell.querySelector('.code-annotation-gutter');
-              gutter.appendChild(gutterDiv);
-            }
-            gutterDiv.style.top = top - 2 + "px";
-            gutterDiv.style.height = height + 4 + "px";
-          }
-          selectedAnnoteEl = annoteEl;
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
         }
-      };
-      const unselectCodeLines = () => {
-        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
-        elementsIds.forEach((elId) => {
-          const div = window.document.getElementById(elId);
-          if (div) {
-            div.remove();
-          }
-        });
-        selectedAnnoteEl = undefined;
-      };
-      // Attach click handler to the DT
-      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
-      for (const annoteDlNode of annoteDls) {
-        annoteDlNode.addEventListener('click', (event) => {
-          const clickedEl = event.target;
-          if (clickedEl !== selectedAnnoteEl) {
-            unselectCodeLines();
-            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
-            if (activeEl) {
-              activeEl.classList.remove('code-annotation-active');
-            }
-            selectCodeLines(clickedEl);
-            clickedEl.classList.add('code-annotation-active');
-          } else {
-            // Unselect the line
-            unselectCodeLines();
-            clickedEl.classList.remove('code-annotation-active');
-          }
-        });
       }
-  const findCites = (el) => {
-    const parentEl = el.parentElement;
-    if (parentEl) {
-      const cites = parentEl.dataset.cites;
-      if (cites) {
-        return {
-          el,
-          cites: cites.split(' ')
-        };
-      } else {
-        return findCites(el.parentElement)
-      }
-    } else {
-      return undefined;
+      return false;
     }
-  };
-  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
-  for (var i=0; i<bibliorefs.length; i++) {
-    const ref = bibliorefs[i];
-    const citeInfo = findCites(ref);
-    if (citeInfo) {
-      tippyHover(citeInfo.el, function() {
-        var popup = window.document.createElement('div');
-        citeInfo.cites.forEach(function(cite) {
-          var citeDiv = window.document.createElement('div');
-          citeDiv.classList.add('hanging-indent');
-          citeDiv.classList.add('csl-entry');
-          var biblioDiv = window.document.getElementById('ref-' + cite);
-          if (biblioDiv) {
-            citeDiv.innerHTML = biblioDiv.innerHTML;
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+        const codeEl = trigger.previousElementSibling.cloneNode(true);
+        for (const childEl of codeEl.children) {
+          if (isCodeAnnotation(childEl)) {
+            childEl.remove();
           }
-          popup.appendChild(citeDiv);
-        });
-        return popup.innerHTML;
+        }
+        return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
       });
     }
-  }
-});
-</script>
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
 </div> <!-- /content -->
+
 
 
 
