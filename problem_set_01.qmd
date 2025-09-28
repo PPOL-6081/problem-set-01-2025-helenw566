@@ -105,21 +105,19 @@ In this case, I primarily removed punctuation, numbers, stop words, and also tri
 
 Using [Danny and Spirling's Pretext](https://github.com/matthewjdenny/preText), tell me which of the pre-processing steps makes a more substantive difference in the data transformation? Would you keep all these steps or would you follow the PreText recommendations? Use a sample of the data to solve this question.
 
-```{r, include= FALSE}
+```{r}
 #preprocessing combinations
 preTextDoc <- factorial_preprocessing(
   df %>% filter(!is.na(text)) %>% slice_sample(n = 100) %>% corpus(text_field = "text"),
   use_ngrams = F,
-  infrequent_term_threshold = 0.2,
-  verbose = T
+  infrequent_term_threshold = 0.2
 )
 
 #getting pretext scores
 preTextResults <- preText(preTextDoc,
                            dataset_name = "Midterm Candidate Social Media Posts",
                            distance_method = "cosine",
-                           num_comparisons = 20,
-                           verbose = TRUE)
+                           num_comparisons = 20)
 
 # regression
 regression_coefficient_plot(preTextResults,
