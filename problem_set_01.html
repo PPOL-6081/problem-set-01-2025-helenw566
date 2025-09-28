@@ -2,11 +2,11 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.3.450">
+<meta name="generator" content="quarto-1.7.32">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="author" content="Professor Tiago Ventura">
+<meta name="author" content="Helen Wang">
 
 <title>Text as Data: Problem Set 01</title>
 <style>
@@ -22,6 +22,7 @@ ul.task-list li input[type="checkbox"] {
   vertical-align: middle;
 }
 /* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
 pre > code.sourceCode { white-space: pre; position: relative; }
 pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
@@ -59,22 +60,50 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 <script src="problem_set_01_files/libs/clipboard/clipboard.min.js"></script>
-<script src="problem_set_01_files/libs/quarto-html/quarto.js"></script>
+<script src="problem_set_01_files/libs/quarto-html/quarto.js" type="module"></script>
+<script src="problem_set_01_files/libs/quarto-html/tabsets/tabsets.js" type="module"></script>
 <script src="problem_set_01_files/libs/quarto-html/popper.min.js"></script>
 <script src="problem_set_01_files/libs/quarto-html/tippy.umd.min.js"></script>
 <script src="problem_set_01_files/libs/quarto-html/anchor.min.js"></script>
 <link href="problem_set_01_files/libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="problem_set_01_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="problem_set_01_files/libs/quarto-html/quarto-syntax-highlighting-37eea08aefeeee20ff55810ff984fec1.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="problem_set_01_files/libs/bootstrap/bootstrap.min.js"></script>
 <link href="problem_set_01_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="problem_set_01_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<link href="problem_set_01_files/libs/bootstrap/bootstrap-bb462d781dde1847d9e3ccf7736099dd.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 
-  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 </head>
 
-<body class="fullcontent">
+<body class="fullcontent quarto-light">
 
 <div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
 
@@ -92,7 +121,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div>
     <div class="quarto-title-meta-heading">Author</div>
     <div class="quarto-title-meta-contents">
-             <p>Professor Tiago Ventura </p>
+             <p>Helen Wang </p>
           </div>
   </div>
     
@@ -101,297 +130,2243 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </div>
   
 
+
 </header>
+
 
 <section id="instructions" class="level2">
 <h2 class="anchored" data-anchor-id="instructions">Instructions</h2>
 <p>To complete this homework, you have two options.</p>
 <p>You can either complete this assignment using a <strong>dataset of your choice</strong>. This is a great opportunity for you to start working with a dataset that you can potentially use for your final project.</p>
-<p>Your second option is to use the tweets dataset we have used in class. You can download the dataset <a href="https://www.dropbox.com/scl/fi/l5rc7nptc23en7fj1halz/tweets_congress.csv?rlkey=joqnuldgh3xanx8y9h8wvkf8p&amp;dl=0">here</a></p>
+<p>Your second option is to this dataset of social media posts from political candidates running for Congress during the 2022 U.S. Midterm election.</p>
+<p>You can download the dataset <a href="https://www.dropbox.com/scl/fi/jz14130dlzj5xvca9txj4/midterm_candidates_labeled_all_May05.csv?rlkey=b0m1h6kk1af3uz9tjqyelthh3&amp;dl=0">here</a></p>
+<p>To know more about the dataset, read and cite this paper: <a href="https://journals.sagepub.com/doi/full/10.1177/20563051251337541" class="uri">https://journals.sagepub.com/doi/full/10.1177/20563051251337541</a></p>
+<p>If you want say thanks to the people who collected and shared this data with us for this class, please send a email to my colleague <a href="https://maggiegmacdonald.com/">Maggie MacDonald</a></p>
 <p><strong>IMPORTANT:</strong> Remember to NOT commit your data to github. Github does not allow you to push large datasets to remote repositories. If you commit your dataset, you will need to reset your commit, and that’s always a bit of work. In addition, remember that your notebook should be compiled with the results of the code blocks.</p>
+<p>Gen AI Use:</p>
+<p>ChatGPT was consulted to deal with memory issues related to calling multiple textstat_simil(). Code was edited in response to reduce memory use, main changes being computing only one similarity matrix rather than 10 (1 for each reference document) and to see which similarity measure would be more memory-efficient. Also was consulted for Q6.2 in regards of how to run KIWC.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">setwd</span>(<span class="st">"C:/Users/helen/OneDrive/Documents/Georgetown/F2025/text_analysis/problem-set-01-2025-helenw566/"</span>)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>pacman<span class="sc">::</span><span class="fu">p_load</span>(</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>  dplyr,</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>  purrr,</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>  tidyr,</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>  ggwordcloud,</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>  quanteda,</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>  quanteda.textstats,</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>  preText,</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>  tidytext,</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>  quanteda.sentiment,</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>  quanteda.dictionaries</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
 </section>
 <section id="question-1" class="level2">
 <h2 class="anchored" data-anchor-id="question-1">Question 1</h2>
-<p>Take a small a sample of your documents and read them carefully. This sample don’t need to be random. Select cases that are more interesting, and close to your theoretical interest in this dataset. What are you thoughts about these documents? What did you learn after reading them?</p>
+<p>Take a small a sample of your documents and read them carefully. This sample doesn’t need to be random. Select cases that are more interesting, and close to your theoretical interest in this dataset. What are you thoughts about these documents? What did you learn after reading them?</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Sample data</span></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">values =</span> <span class="fu">rnorm</span>(<span class="dv">100</span>))</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Create histogram</span></span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(data, <span class="fu">aes</span>(<span class="at">x =</span> values)) <span class="sc">+</span></span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">binwidth =</span> <span class="fl">0.5</span>, <span class="at">fill =</span> <span class="st">"blue"</span>, <span class="at">color =</span> <span class="st">"black"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<p><img src="problem_set_01_files/figure-html/unnamed-chunk-1-1.png" class="img-fluid" width="672"></p>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># read in file</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"data/midterm_candidates_labeled_all_May05.csv"</span>)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="co"># look at a random sample</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>df <span class="sc">%&gt;%</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice_sample</span>(<span class="at">n =</span> <span class="dv">25</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pull</span>(text)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> [1] "Congratulations Rev. @KWCosby on your 43rd Pastoral Anniversary as the leader of @ssclive! It was an honor to be there today and to present you with a citation from the Kentucky General Assembly to mark the occasion. https://t.co/PHXkhhdC3E"                                                                                                                                                                                                                       
+ [2] "doesn't matter if you're Republican or Democrat this is unacceptable people's lives are on the line and what are Joe Biden and Patty Murray doing about it buying electric cars for rich people I know what it's like to be down and out and lost in a system that cares more about serving itself than serving the people it's not just indefensible it's immoral and putting people first is why I'm running for Senate I'm Tiffany Smiley and I approve this message"
+ [3] "@Madame_Bovaray @RepYoungKim thank you!"                                                                                                                                                                                                                                                                                                                                                                                                                                
+ [4] "And the Pulitzer Prize for Politician-Worshipping Contortions goes to……. https://t.co/qkmNrr0Wuw"                                                                                                                                                                                                                                                                                                                                                                       
+ [5] "6 more years! Let's win this."                                                                                                                                                                                                                                                                                                                                                                                                                                          
+ [6] "@YetiMoose Over 1 million USAmerican lives have been lost to COVID alone. THAT is the tragedy.\n\nFocus.\n\nAmerican lives are worth saving."                                                                                                                                                                                                                                                                                                                           
+ [7] "Looking forward to attending the Candidate Forum next week in Queens! #DebateMeAOC https://t.co/QKwCOroscx"                                                                                                                                                                                                                                                                                                                                                             
+ [8] "Come to our Town Hall next Wed. Oct 26th in Byron Center. I look forward to meeting you!\n\nRSVP: https://www.votejohngibbs.com/event-details/byron-center-town-hall"                                                                                                                                                                                                                                                                                                   
+ [9] "@INDems @tommcdermottjr @votezenai @TheDestinyWells @jessica4indiana @allencountydem @LaPorteCoDems @ktchncabinetcd2 🚨🚨Updated time for @LaPorteCoDems Stop. 2pm CT https://t.co/ThwF4YopE0"                                                                                                                                                                                                                                                                            
+[10] "🚨 🚨 🚨 BREAKING🚨 🚨 🚨 Brad Pfaff just announced the location for his next sweet rally with all of his motivated supporters. Please RSVP as soon as possible, there is only room for both of you."                                                                                                                                                                                                                                                                         
+[11] "Thank you, Packers TE Paul Coffman, for standing with me in this fight for freedom. \n\nWe are going to need all hands on deck this November 8th to ensure we can keep Wisconsin Red. Visit https://t.co/Krb2cgSXUH to make a plan to get out and vote! https://t.co/a6AGWA9zyj"                                                                                                                                                                                        
+[12] "Joe Biden’s Far Left policies have caused an energy crisis in America. The quickest way to lower gas prices is to unleash American energy independence - One of the many  reasons why Republicans must win back the House to Save America!"                                                                                                                                                                                                                             
+[13] "#Educators, #Students, #Administrators, And Families Will Gain Real Educational Leadership In The Second Congressional District! #AR02 \n#HBCU #EducationConsultant #Education #HigherEducation #PreK #SecondaryEducation #ARPX #DEI #ProfessionalDevelopment #ArkEducation https://t.co/3j45UeXvtj"                                                                                                                                                                    
+[14] "@elonmusk @Rainmaker1973 😇"                                                                                                                                                                                                                                                                                                                                                                                                                                             
+[15] "It was my honor to address the WNY Association of Retired Law Enforcement Breakfast and introduce an NYPD Hero &amp; the next Lieutenant Governor of New York, Alison Esposito! Thank you to President Paul Beakman &amp; all our retired law enforcement members for your years of selfless service to the people of NY. #BackTheBlue #NY23"                                                                                                                                   
+[16] "#WhereIsGUY Greetings…Reading, Wyomissing &amp;amp; Berwyn. Pumpkin-Paloma ⁦@goggleworks⁩ 🎃; #OldSchool street-corner rally Wyomissing &amp;amp; #FaithAndBlue @ CityPark—&amp;amp;, E-A-G-L-E-S tailgate @ #30Main. The common-theme: adults are trying to push-on for their kids.  I’m offering #Hope https://t.co/Y7KQxTKO6x"                                                                                                                                                      
+[17] "I love October… Time to #WinForVin"                                                                                                                                                                                                                                                                                                                                                                                                                                     
+[18] "Today Chef Peter at Panini Grill unveiled the “Malliotakis American Dream Panini” sautéed pulled pork, ham, feta with dolmades (stuffed grape leaves) garnish…👍💯"                                                                                                                                                                                                                                                                                                       
+[19] "@SarahUnsicker Thanks!"                                                                                                                                                                                                                                                                                                                                                                                                                                                 
+[20] "This you?? https://t.co/igzRRZDUcr https://t.co/HU4CYw225Z"                                                                                                                                                                                                                                                                                                                                                                                                             
+[21] "A star is born - congratulations Weston  https://t.co/xbIItqkarq"                                                                                                                                                                                                                                                                                                                                                                                                       
+[22] "Check out my interview with American Adversaries here: youtube.com/watch:=:https://www.youtube.com/?v=dJlXrRiJQO4. The mission of our campaign has been broadcasting all across Osceola, Orange and Polk County and people are ready for CHANGE. ScottyMooreForCongress.com #TakeBackTheHouse #FirePelosi #SaveAmerica #TeamScotty"                                                                                                                                     
+[23] "GREAT turnout in support of #TeamHerschel in Macon! Georgians across the state are excited for Election Day, and so far, breaking every early voting record in the book. If you want to make sure your voice is heard... VOTE!! &amp;gt;&amp;gt; https://t.co/AS8wSwrDJQ https://t.co/WMzMb7SRcP"                                                                                                                                                                               
+[24] "Thank you to the volunteers who came out to the #SingletarySuperSaturday event in the Town of Irondequoit.  We are getting our message out about bringing common sense back to our everyday lives.  Appreciate you all. #17Days \n\nwww.singletary4congress.com"                                                                                                                                                                                                        
+[25] "No surprise a top (and pathetic) Biden official John Kerry was overseas spending time with an anti-American narco-trafficking marxist dictator like Maduro https://t.co/50wqVEEATU"                                                                                                                                                                                                                                                                                     </code></pre>
 </div>
 </div>
+<p>The content of the documents seem to vary widely–while largely written with a political agenda in mind, the texts seem to include everything from descriptive statistics, personal attacks against select politicians, support for political allies, calls of action for specific agendas, dissemination of campaign ideals/logistics, personal social interactions, etc. As expected from social media data, there’s liberal use of hashtags, emojis, referencing to specific accounts, and links, which will have to be considered during preprocessing.</p>
 </section>
 <section id="question-2" class="level2">
 <h2 class="anchored" data-anchor-id="question-2">Question 2</h2>
 <p>Tokenize your documents and pre-process them, removing any “extraneous” content you noticed in closely reading a sample of your documents. What content have you removed and why? Any pre-processing steps from what you saw in class that you consider not to use here?</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>df_corpus <span class="ot">&lt;-</span> df <span class="sc">%&gt;%</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="co">#removing NA text</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(text)) <span class="sc">%&gt;%</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="co">#convert to corpus</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">corpus</span>(<span class="at">text_field =</span> <span class="st">"text"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>  <span class="co">#remove punctuation and numbers</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tokens</span>(</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">remove_punct =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">remove_numbers =</span> <span class="cn">TRUE</span>, </span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">verbose =</span> <span class="cn">TRUE</span></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>  <span class="co">#lowercase</span></span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tokens_tolower</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>  <span class="co">#remove stopwords</span></span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tokens_remove</span>(<span class="fu">stopwords</span>(<span class="st">"en"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>  <span class="co">#stemming</span></span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tokens_wordstem</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>  <span class="co">#convert to dfm</span></span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">dfm</span>() </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Creating a tokens from a corpus object...</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code> ...starting tokenization</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code> ...tokenizing 1 of 2 blocks</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code> ...preserving hyphens</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code> ...preserving elisions</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code> ...preserving social media tags (#, @)</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code> ...tokenizing 2 of 2 blocks</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code> ...preserving hyphens</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code> ...preserving elisions</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code> ...preserving social media tags (#, @)</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code> ...removing separators, punctuation, numbers </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code> ...174,893 unique types</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code> ...complete, elapsed time: 19.3 seconds.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Finished constructing tokens from 134,529 documents</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>df_corpus_trim <span class="ot">&lt;-</span> df_corpus <span class="sc">%&gt;%</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>  <span class="co">#trim for common and rare words</span></span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">dfm_trim</span>(<span class="at">min_docfreq =</span> <span class="fl">0.0005</span>,</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>             <span class="at">max_docfreq =</span> <span class="fl">0.99</span>,</span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>             <span class="at">docfreq_type =</span><span class="st">"prop"</span>, </span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>             <span class="at">verbose =</span> <span class="cn">TRUE</span>)  </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>dfm_trim() changed from 141,296 features (134,529 documents) to 3,619 features (134,529 documents)</code></pre>
+</div>
+</div>
+<p>In this case, I primarily removed punctuation, numbers, stop words, and also trimmed the document to remove common words and rare words. I also did some equivalence mapping via stemming. While removing symbols were an option, given that we’re working with social media data, I thought keep hashtags and <span class="citation" data-cites="s">@s</span> could allow us to retain important context so I retained those. I also avoid lemmatization as I already had conducted stemming and I did not want to reduce the complexity of the document too much by doing both. When trimming the document, I applied a much stricter bench mark for minimum document frequency versus maximum document frequency. While playing around with different options, I noticed that minimum document frequency appeared to play a more significant role in trimming (i.e.&nbsp;changing max_docfreq from 0.99 to 0.999 while holding min_docfreq constant had no effect while changing min_docfreq from 0.0001 to 0.0005 while holding max_docfreq constant led to a change from 9947 features to 3619). To reduce noise and to reduce computational expense, I took on a moderate approach to document trimming.</p>
 </section>
 <section id="question-3" class="level2">
 <h2 class="anchored" data-anchor-id="question-3">Question 3</h2>
 <p>Using <a href="https://github.com/matthewjdenny/preText">Danny and Spirling’s Pretext</a>, tell me which of the pre-processing steps makes a more substantive difference in the data transformation? Would you keep all these steps or would you follow the PreText recommendations? Use a sample of the data to solve this question.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co">#preprocessing combinations</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>preTextDoc <span class="ot">&lt;-</span> <span class="fu">factorial_preprocessing</span>(</span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>  df <span class="sc">%&gt;%</span> <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(text)) <span class="sc">%&gt;%</span> <span class="fu">slice_sample</span>(<span class="at">n =</span> <span class="dv">100</span>) <span class="sc">%&gt;%</span> <span class="fu">corpus</span>(<span class="at">text_field =</span> <span class="st">"text"</span>),</span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">use_ngrams =</span> F,</span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">infrequent_term_threshold =</span> <span class="fl">0.2</span></span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Preprocessing 100 documents 64 different ways...
+Currently working on combination 1 of 64 </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Creating a dfm from a tokens object...</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code> ...lowercasing</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code> ...complete, elapsed time: 0.02 seconds.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Finished constructing a 100 x 1,041 sparse dfm.</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Removing 1040 of 1041 total terms that appeared in less than 20 documents.
+Currently working on combination 2 of 64 </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Creating a dfm from a tokens object...</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code> ...lowercasing</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code> ...complete, elapsed time: 0 seconds.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Finished constructing a 100 x 1,064 sparse dfm.</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Removing 1060 of 1064 total terms that appeared in less than 20 documents.
+Currently working on combination 3 of 64 </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Creating a dfm from a tokens object...</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code> ...lowercasing</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code> ...complete, elapsed time: 0.01 seconds.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Finished constructing a 100 x 1,063 sparse dfm.</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Removing 1062 of 1063 total terms that appeared in less than 20 documents.
+Currently working on combination 4 of 64 </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Creating a dfm from a tokens object...</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code> ...lowercasing</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code> ...complete, elapsed time: 0 seconds.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Finished constructing a 100 x 1,086 sparse dfm.</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Removing 1082 of 1086 total terms that appeared in less than 20 documents.
+Currently working on combination 5 of 64 </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Creating a dfm from a tokens object...</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code> ...lowercasing</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code> ...complete, elapsed time: 0.02 seconds.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Finished constructing a 100 x 1,048 sparse dfm.</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Removing 1047 of 1048 total terms that appeared in less than 20 documents.
+Currently working on combination 6 of 64 </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Creating a dfm from a tokens object...</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code> ...lowercasing</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code> ...complete, elapsed time: 0.01 seconds.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Finished constructing a 100 x 1,071 sparse dfm.</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Removing 1067 of 1071 total terms that appeared in less than 20 documents.
+Currently working on combination 7 of 64 </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Creating a dfm from a tokens object...</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code> ...lowercasing</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code> ...complete, elapsed time: 0.01 seconds.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Finished constructing a 100 x 1,070 sparse dfm.</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Removing 1069 of 1070 total terms that appeared in less than 20 documents.
+Currently working on combination 8 of 64 </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Creating a dfm from a tokens object...</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code> ...lowercasing</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code> ...complete, elapsed time: 0.02 seconds.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Finished constructing a 100 x 1,093 sparse dfm.</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Removing 1089 of 1093 total terms that appeared in less than 20 documents.
+Currently working on combination 9 of 64 </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Creating a dfm from a tokens object...</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code> ...lowercasing</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code> ...complete, elapsed time: 0.01 seconds.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Finished constructing a 100 x 1,145 sparse dfm.</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Removing 1145 of 1145 total terms that appeared in less than 20 documents.
+Currently working on combination 10 of 64 </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Creating a dfm from a tokens object...</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code> ...lowercasing</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code> ...complete, elapsed time: 0.01 seconds.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Finished constructing a 100 x 1,168 sparse dfm.</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Removing 1165 of 1168 total terms that appeared in less than 20 documents.
+Currently working on combination 11 of 64 </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Creating a dfm from a tokens object...</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code> ...lowercasing</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code> ...complete, elapsed time: 0.01 seconds.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Finished constructing a 100 x 1,167 sparse dfm.</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Removing 1167 of 1167 total terms that appeared in less than 20 documents.
+Currently working on combination 12 of 64 </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Creating a dfm from a tokens object...</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code> ...lowercasing</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code> ...complete, elapsed time: 0.01 seconds.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Finished constructing a 100 x 1,190 sparse dfm.</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Removing 1187 of 1190 total terms that appeared in less than 20 documents.
+Currently working on combination 13 of 64 </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Creating a dfm from a tokens object...</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code> ...lowercasing</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code> ...complete, elapsed time: 0.02 seconds.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Finished constructing a 100 x 1,145 sparse dfm.</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Removing 1145 of 1145 total terms that appeared in less than 20 documents.
+Currently working on combination 14 of 64 </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Creating a dfm from a tokens object...</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code> ...lowercasing</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code> ...complete, elapsed time: 0 seconds.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Finished constructing a 100 x 1,168 sparse dfm.</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Removing 1165 of 1168 total terms that appeared in less than 20 documents.
+Currently working on combination 15 of 64 </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Creating a dfm from a tokens object...</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code> ...lowercasing</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code> ...complete, elapsed time: 0.02 seconds.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Finished constructing a 100 x 1,167 sparse dfm.</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Removing 1167 of 1167 total terms that appeared in less than 20 documents.
+Currently working on combination 16 of 64 </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Creating a dfm from a tokens object...</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code> ...lowercasing</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code> ...complete, elapsed time: 0.02 seconds.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Finished constructing a 100 x 1,190 sparse dfm.</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Removing 1187 of 1190 total terms that appeared in less than 20 documents.
+Currently working on combination 17 of 64 </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Creating a dfm from a tokens object...</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code> ...lowercasing</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code> ...complete, elapsed time: 0 seconds.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Finished constructing a 100 x 1,145 sparse dfm.</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Removing 1130 of 1145 total terms that appeared in less than 20 documents.
+Currently working on combination 18 of 64 </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Creating a dfm from a tokens object...</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code> ...lowercasing</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code> ...complete, elapsed time: 0 seconds.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Finished constructing a 100 x 1,168 sparse dfm.</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Removing 1150 of 1168 total terms that appeared in less than 20 documents.
+Currently working on combination 19 of 64 </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Creating a dfm from a tokens object...</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code> ...lowercasing</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code> ...complete, elapsed time: 0.01 seconds.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Finished constructing a 100 x 1,167 sparse dfm.</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Removing 1152 of 1167 total terms that appeared in less than 20 documents.
+Currently working on combination 20 of 64 </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Creating a dfm from a tokens object...</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code> ...lowercasing</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code> ...complete, elapsed time: 0 seconds.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Finished constructing a 100 x 1,190 sparse dfm.</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Removing 1172 of 1190 total terms that appeared in less than 20 documents.
+Currently working on combination 21 of 64 </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Creating a dfm from a tokens object...</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code> ...lowercasing</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code> ...complete, elapsed time: 0.01 seconds.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Finished constructing a 100 x 1,152 sparse dfm.</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Removing 1137 of 1152 total terms that appeared in less than 20 documents.
+Currently working on combination 22 of 64 </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Creating a dfm from a tokens object...</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code> ...lowercasing</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code> ...complete, elapsed time: 0.02 seconds.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Finished constructing a 100 x 1,175 sparse dfm.</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Removing 1157 of 1175 total terms that appeared in less than 20 documents.
+Currently working on combination 23 of 64 </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Creating a dfm from a tokens object...</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code> ...lowercasing</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code> ...complete, elapsed time: 0.01 seconds.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Finished constructing a 100 x 1,174 sparse dfm.</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Removing 1159 of 1174 total terms that appeared in less than 20 documents.
+Currently working on combination 24 of 64 </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Creating a dfm from a tokens object...</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code> ...lowercasing</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code> ...complete, elapsed time: 0.01 seconds.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Finished constructing a 100 x 1,197 sparse dfm.</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Removing 1179 of 1197 total terms that appeared in less than 20 documents.
+Currently working on combination 25 of 64 </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Creating a dfm from a tokens object...</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code> ...lowercasing</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code> ...complete, elapsed time: 0.01 seconds.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Finished constructing a 100 x 1,254 sparse dfm.</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Removing 1240 of 1254 total terms that appeared in less than 20 documents.
+Currently working on combination 26 of 64 </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Creating a dfm from a tokens object...</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code> ...lowercasing</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code> ...complete, elapsed time: 0 seconds.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Finished constructing a 100 x 1,277 sparse dfm.</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Removing 1260 of 1277 total terms that appeared in less than 20 documents.
+Currently working on combination 27 of 64 </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Creating a dfm from a tokens object...</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code> ...lowercasing</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code> ...complete, elapsed time: 0 seconds.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Finished constructing a 100 x 1,276 sparse dfm.</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Removing 1262 of 1276 total terms that appeared in less than 20 documents.
+Currently working on combination 28 of 64 </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Creating a dfm from a tokens object...</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code> ...lowercasing</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code> ...complete, elapsed time: 0 seconds.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Finished constructing a 100 x 1,299 sparse dfm.</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Removing 1282 of 1299 total terms that appeared in less than 20 documents.
+Currently working on combination 29 of 64 </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Creating a dfm from a tokens object...</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code> ...lowercasing</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code> ...complete, elapsed time: 0.02 seconds.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Finished constructing a 100 x 1,254 sparse dfm.</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Removing 1240 of 1254 total terms that appeared in less than 20 documents.
+Currently working on combination 30 of 64 </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Creating a dfm from a tokens object...</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code> ...lowercasing</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code> ...complete, elapsed time: 0 seconds.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Finished constructing a 100 x 1,277 sparse dfm.</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Removing 1260 of 1277 total terms that appeared in less than 20 documents.
+Currently working on combination 31 of 64 </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Creating a dfm from a tokens object...</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code> ...lowercasing</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code> ...complete, elapsed time: 0.02 seconds.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Finished constructing a 100 x 1,276 sparse dfm.</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Removing 1262 of 1276 total terms that appeared in less than 20 documents.
+Currently working on combination 32 of 64 </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Creating a dfm from a tokens object...</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code> ...lowercasing</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code> ...complete, elapsed time: 0 seconds.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Finished constructing a 100 x 1,299 sparse dfm.</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Removing 1282 of 1299 total terms that appeared in less than 20 documents.
+Currently working on combination 33 of 64 </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Creating a dfm from a tokens object...</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code> ...lowercasing</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code> ...complete, elapsed time: 0.02 seconds.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Finished constructing a 100 x 1,041 sparse dfm.</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Currently working on combination 34 of 64 </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Creating a dfm from a tokens object...</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code> ...lowercasing</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code> ...complete, elapsed time: 0 seconds.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Finished constructing a 100 x 1,064 sparse dfm.</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Currently working on combination 35 of 64 </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Creating a dfm from a tokens object...</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code> ...lowercasing</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code> ...complete, elapsed time: 0.01 seconds.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Finished constructing a 100 x 1,063 sparse dfm.</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Currently working on combination 36 of 64 </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Creating a dfm from a tokens object...</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code> ...lowercasing</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code> ...complete, elapsed time: 0.02 seconds.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Finished constructing a 100 x 1,086 sparse dfm.</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Currently working on combination 37 of 64 </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Creating a dfm from a tokens object...</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code> ...lowercasing</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code> ...complete, elapsed time: 0.01 seconds.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Finished constructing a 100 x 1,048 sparse dfm.</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Currently working on combination 38 of 64 </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Creating a dfm from a tokens object...</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code> ...lowercasing</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code> ...complete, elapsed time: 0.02 seconds.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Finished constructing a 100 x 1,071 sparse dfm.</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Currently working on combination 39 of 64 </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Creating a dfm from a tokens object...</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code> ...lowercasing</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code> ...complete, elapsed time: 0.01 seconds.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Finished constructing a 100 x 1,070 sparse dfm.</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Currently working on combination 40 of 64 </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Creating a dfm from a tokens object...</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code> ...lowercasing</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code> ...complete, elapsed time: 0 seconds.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Finished constructing a 100 x 1,093 sparse dfm.</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Currently working on combination 41 of 64 </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Creating a dfm from a tokens object...</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code> ...lowercasing</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code> ...complete, elapsed time: 0.03 seconds.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Finished constructing a 100 x 1,145 sparse dfm.</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Currently working on combination 42 of 64 </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Creating a dfm from a tokens object...</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code> ...lowercasing</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code> ...complete, elapsed time: 0.01 seconds.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Finished constructing a 100 x 1,168 sparse dfm.</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Currently working on combination 43 of 64 </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Creating a dfm from a tokens object...</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code> ...lowercasing</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code> ...complete, elapsed time: 0 seconds.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Finished constructing a 100 x 1,167 sparse dfm.</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Currently working on combination 44 of 64 </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Creating a dfm from a tokens object...</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code> ...lowercasing</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code> ...complete, elapsed time: 0 seconds.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Finished constructing a 100 x 1,190 sparse dfm.</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Currently working on combination 45 of 64 </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Creating a dfm from a tokens object...</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code> ...lowercasing</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code> ...complete, elapsed time: 0.02 seconds.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Finished constructing a 100 x 1,145 sparse dfm.</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Currently working on combination 46 of 64 </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Creating a dfm from a tokens object...</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code> ...lowercasing</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code> ...complete, elapsed time: 0.01 seconds.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Finished constructing a 100 x 1,168 sparse dfm.</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Currently working on combination 47 of 64 </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Creating a dfm from a tokens object...</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code> ...lowercasing</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code> ...complete, elapsed time: 0.01 seconds.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Finished constructing a 100 x 1,167 sparse dfm.</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Currently working on combination 48 of 64 </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Creating a dfm from a tokens object...</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code> ...lowercasing</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code> ...complete, elapsed time: 0.02 seconds.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Finished constructing a 100 x 1,190 sparse dfm.</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Currently working on combination 49 of 64 </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Creating a dfm from a tokens object...</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code> ...lowercasing</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code> ...complete, elapsed time: 0.02 seconds.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Finished constructing a 100 x 1,145 sparse dfm.</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Currently working on combination 50 of 64 </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Creating a dfm from a tokens object...</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code> ...lowercasing</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code> ...complete, elapsed time: 0.01 seconds.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Finished constructing a 100 x 1,168 sparse dfm.</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Currently working on combination 51 of 64 </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Creating a dfm from a tokens object...</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code> ...lowercasing</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code> ...complete, elapsed time: 0.01 seconds.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Finished constructing a 100 x 1,167 sparse dfm.</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Currently working on combination 52 of 64 </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Creating a dfm from a tokens object...</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code> ...lowercasing</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code> ...complete, elapsed time: 0.02 seconds.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Finished constructing a 100 x 1,190 sparse dfm.</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Currently working on combination 53 of 64 </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Creating a dfm from a tokens object...</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code> ...lowercasing</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code> ...complete, elapsed time: 0.02 seconds.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Finished constructing a 100 x 1,152 sparse dfm.</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Currently working on combination 54 of 64 </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Creating a dfm from a tokens object...</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code> ...lowercasing</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code> ...complete, elapsed time: 0 seconds.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Finished constructing a 100 x 1,175 sparse dfm.</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Currently working on combination 55 of 64 </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Creating a dfm from a tokens object...</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code> ...lowercasing</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code> ...complete, elapsed time: 0.02 seconds.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Finished constructing a 100 x 1,174 sparse dfm.</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Currently working on combination 56 of 64 </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Creating a dfm from a tokens object...</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code> ...lowercasing</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code> ...complete, elapsed time: 0 seconds.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Finished constructing a 100 x 1,197 sparse dfm.</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Currently working on combination 57 of 64 </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Creating a dfm from a tokens object...</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code> ...lowercasing</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code> ...complete, elapsed time: 0.02 seconds.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Finished constructing a 100 x 1,254 sparse dfm.</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Currently working on combination 58 of 64 </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Creating a dfm from a tokens object...</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code> ...lowercasing</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code> ...complete, elapsed time: 0 seconds.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Finished constructing a 100 x 1,277 sparse dfm.</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Currently working on combination 59 of 64 </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Creating a dfm from a tokens object...</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code> ...lowercasing</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code> ...complete, elapsed time: 0.02 seconds.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Finished constructing a 100 x 1,276 sparse dfm.</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Currently working on combination 60 of 64 </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Creating a dfm from a tokens object...</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code> ...lowercasing</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code> ...complete, elapsed time: 0.02 seconds.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Finished constructing a 100 x 1,299 sparse dfm.</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Currently working on combination 61 of 64 </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Creating a dfm from a tokens object...</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code> ...lowercasing</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code> ...complete, elapsed time: 0.02 seconds.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Finished constructing a 100 x 1,254 sparse dfm.</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Currently working on combination 62 of 64 </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Creating a dfm from a tokens object...</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code> ...lowercasing</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code> ...complete, elapsed time: 0.05 seconds.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Finished constructing a 100 x 1,277 sparse dfm.</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Currently working on combination 63 of 64 </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Creating a dfm from a tokens object...</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code> ...lowercasing</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code> ...complete, elapsed time: 0.01 seconds.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Finished constructing a 100 x 1,276 sparse dfm.</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Currently working on combination 64 of 64 </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Creating a dfm from a tokens object...</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code> ...lowercasing</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code> ...complete, elapsed time: 0.02 seconds.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Finished constructing a 100 x 1,299 sparse dfm.</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb342"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb342-1"><a href="#cb342-1" aria-hidden="true" tabindex="-1"></a><span class="co">#getting pretext scores</span></span>
+<span id="cb342-2"><a href="#cb342-2" aria-hidden="true" tabindex="-1"></a>preTextResults <span class="ot">&lt;-</span> <span class="fu">preText</span>(preTextDoc,</span>
+<span id="cb342-3"><a href="#cb342-3" aria-hidden="true" tabindex="-1"></a>                           <span class="at">dataset_name =</span> <span class="st">"Midterm Candidate Social Media Posts"</span>,</span>
+<span id="cb342-4"><a href="#cb342-4" aria-hidden="true" tabindex="-1"></a>                           <span class="at">distance_method =</span> <span class="st">"cosine"</span>,</span>
+<span id="cb342-5"><a href="#cb342-5" aria-hidden="true" tabindex="-1"></a>                           <span class="at">num_comparisons =</span> <span class="dv">20</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Generating document distances...
+Currently working on dfm 1 of 64 
+Complete in: 0.09 seconds...
+Currently working on dfm 2 of 64 
+Complete in: 0.03 seconds...
+Currently working on dfm 3 of 64 
+Complete in: 0.04 seconds...
+Currently working on dfm 4 of 64 
+Complete in: 0.03 seconds...
+Currently working on dfm 5 of 64 
+Complete in: 0.03 seconds...
+Currently working on dfm 6 of 64 
+Complete in: 0.04 seconds...
+Currently working on dfm 7 of 64 
+Complete in: 0.04 seconds...
+Currently working on dfm 8 of 64 
+Complete in: 0.03 seconds...
+Currently working on dfm 9 of 64 </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in stats::cmdscale(distances, k = dimensions): only 0 of the first 2
+eigenvalues are &gt; 0</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Complete in: 0.03 seconds...
+Currently working on dfm 10 of 64 
+Complete in: 0.03 seconds...
+Currently working on dfm 11 of 64 </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in stats::cmdscale(distances, k = dimensions): only 0 of the first 2
+eigenvalues are &gt; 0</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Complete in: 0.03 seconds...
+Currently working on dfm 12 of 64 
+Complete in: 0.05 seconds...
+Currently working on dfm 13 of 64 </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in stats::cmdscale(distances, k = dimensions): only 0 of the first 2
+eigenvalues are &gt; 0</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Complete in: 0.03 seconds...
+Currently working on dfm 14 of 64 
+Complete in: 0.03 seconds...
+Currently working on dfm 15 of 64 </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in stats::cmdscale(distances, k = dimensions): only 0 of the first 2
+eigenvalues are &gt; 0</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Complete in: 0.03 seconds...
+Currently working on dfm 16 of 64 
+Complete in: 0.03 seconds...
+Currently working on dfm 17 of 64 
+Complete in: 0.08 seconds...
+Currently working on dfm 18 of 64 
+Complete in: 0.03 seconds...
+Currently working on dfm 19 of 64 
+Complete in: 0.03 seconds...
+Currently working on dfm 20 of 64 
+Complete in: 0.03 seconds...
+Currently working on dfm 21 of 64 
+Complete in: 0.04 seconds...
+Currently working on dfm 22 of 64 
+Complete in: 0.03 seconds...
+Currently working on dfm 23 of 64 
+Complete in: 0.04 seconds...
+Currently working on dfm 24 of 64 
+Complete in: 0.04 seconds...
+Currently working on dfm 25 of 64 
+Complete in: 0.03 seconds...
+Currently working on dfm 26 of 64 
+Complete in: 0.04 seconds...
+Currently working on dfm 27 of 64 
+Complete in: 0.03 seconds...
+Currently working on dfm 28 of 64 
+Complete in: 0.04 seconds...
+Currently working on dfm 29 of 64 
+Complete in: 0.04 seconds...
+Currently working on dfm 30 of 64 
+Complete in: 0.03 seconds...
+Currently working on dfm 31 of 64 
+Complete in: 0.04 seconds...
+Currently working on dfm 32 of 64 
+Complete in: 0.03 seconds...
+Currently working on dfm 33 of 64 
+Complete in: 0.04 seconds...
+Currently working on dfm 34 of 64 
+Complete in: 0.03 seconds...
+Currently working on dfm 35 of 64 
+Complete in: 0.05 seconds...
+Currently working on dfm 36 of 64 
+Complete in: 0.06 seconds...
+Currently working on dfm 37 of 64 
+Complete in: 0.05 seconds...
+Currently working on dfm 38 of 64 
+Complete in: 0.03 seconds...
+Currently working on dfm 39 of 64 
+Complete in: 0.03 seconds...
+Currently working on dfm 40 of 64 
+Complete in: 0.05 seconds...
+Currently working on dfm 41 of 64 
+Complete in: 0.03 seconds...
+Currently working on dfm 42 of 64 
+Complete in: 0.03 seconds...
+Currently working on dfm 43 of 64 
+Complete in: 0.05 seconds...
+Currently working on dfm 44 of 64 
+Complete in: 0.03 seconds...
+Currently working on dfm 45 of 64 
+Complete in: 0.03 seconds...
+Currently working on dfm 46 of 64 
+Complete in: 0.05 seconds...
+Currently working on dfm 47 of 64 
+Complete in: 0.03 seconds...
+Currently working on dfm 48 of 64 
+Complete in: 0.03 seconds...
+Currently working on dfm 49 of 64 
+Complete in: 0.05 seconds...
+Currently working on dfm 50 of 64 
+Complete in: 0.05 seconds...
+Currently working on dfm 51 of 64 
+Complete in: 0.03 seconds...
+Currently working on dfm 52 of 64 
+Complete in: 0.04 seconds...
+Currently working on dfm 53 of 64 
+Complete in: 0.03 seconds...
+Currently working on dfm 54 of 64 
+Complete in: 0.05 seconds...
+Currently working on dfm 55 of 64 
+Complete in: 0.06 seconds...
+Currently working on dfm 56 of 64 
+Complete in: 0.05 seconds...
+Currently working on dfm 57 of 64 
+Complete in: 0.03 seconds...
+Currently working on dfm 58 of 64 
+Complete in: 0.03 seconds...
+Currently working on dfm 59 of 64 
+Complete in: 0.05 seconds...
+Currently working on dfm 60 of 64 
+Complete in: 0.05 seconds...
+Currently working on dfm 61 of 64 
+Complete in: 0.03 seconds...
+Currently working on dfm 62 of 64 
+Complete in: 0.05 seconds...
+Currently working on dfm 63 of 64 
+Complete in: 0.03 seconds...
+Currently working on dfm 64 of 64 
+Complete in: 0.04 seconds...
+Generating preText Scores...
+Currently working on DFM: 1 of 64 
+
+Complete in: 0.04 seconds...
+Currently working on DFM: 2 of 64 
+
+Complete in: 0.04 seconds...
+Currently working on DFM: 3 of 64 
+
+Complete in: 0.02 seconds...
+Currently working on DFM: 4 of 64 
+
+Complete in: 0.06 seconds...
+Currently working on DFM: 5 of 64 
+
+Complete in: 0.02 seconds...
+Currently working on DFM: 6 of 64 
+
+Complete in: 0.04 seconds...
+Currently working on DFM: 7 of 64 
+
+Complete in: 0.03 seconds...
+Currently working on DFM: 8 of 64 
+
+Complete in: 0.05 seconds...
+Currently working on DFM: 9 of 64 
+
+Complete in: 0.02 seconds...
+Currently working on DFM: 10 of 64 
+
+Complete in: 0.08 seconds...
+Currently working on DFM: 11 of 64 
+
+Complete in: 0.03 seconds...
+Currently working on DFM: 12 of 64 
+
+Complete in: 0.01 seconds...
+Currently working on DFM: 13 of 64 
+
+Complete in: 0.05 seconds...
+Currently working on DFM: 14 of 64 
+
+Complete in: 0.01 seconds...
+Currently working on DFM: 15 of 64 
+
+Complete in: 0.05 seconds...
+Currently working on DFM: 16 of 64 
+
+Complete in: 0.06 seconds...
+Currently working on DFM: 17 of 64 
+
+Complete in: 0.07 seconds...
+Currently working on DFM: 18 of 64 
+
+Complete in: 0.01 seconds...
+Currently working on DFM: 19 of 64 
+
+Complete in: 0.05 seconds...
+Currently working on DFM: 20 of 64 
+
+Complete in: 0.01 seconds...
+Currently working on DFM: 21 of 64 
+
+Complete in: 0.05 seconds...
+Currently working on DFM: 22 of 64 
+
+Complete in: 0.02 seconds...
+Currently working on DFM: 23 of 64 
+
+Complete in: 0.04 seconds...
+Currently working on DFM: 24 of 64 
+
+Complete in: 0.04 seconds...
+Currently working on DFM: 25 of 64 
+
+Complete in: 0.01 seconds...
+Currently working on DFM: 26 of 64 
+
+Complete in: 0.05 seconds...
+Currently working on DFM: 27 of 64 
+
+Complete in: 0.01 seconds...
+Currently working on DFM: 28 of 64 
+
+Complete in: 0.05 seconds...
+Currently working on DFM: 29 of 64 
+
+Complete in: 0.02 seconds...
+Currently working on DFM: 30 of 64 
+
+Complete in: 0.04 seconds...
+Currently working on DFM: 31 of 64 
+
+Complete in: 0.03 seconds...
+Currently working on DFM: 32 of 64 
+
+Complete in: 0.07 seconds...
+Currently working on DFM: 33 of 64 
+
+Complete in: 0.01 seconds...
+Currently working on DFM: 34 of 64 
+
+Complete in: 0.05 seconds...
+Currently working on DFM: 35 of 64 
+
+Complete in: 0.03 seconds...
+Currently working on DFM: 36 of 64 
+
+Complete in: 0.05 seconds...
+Currently working on DFM: 37 of 64 
+
+Complete in: 0.01 seconds...
+Currently working on DFM: 38 of 64 
+
+Complete in: 0.03 seconds...
+Currently working on DFM: 39 of 64 
+
+Complete in: 0.05 seconds...
+Currently working on DFM: 40 of 64 
+
+Complete in: 0.02 seconds...
+Currently working on DFM: 41 of 64 
+
+Complete in: 0.04 seconds...
+Currently working on DFM: 42 of 64 
+
+Complete in: 0.03 seconds...
+Currently working on DFM: 43 of 64 
+
+Complete in: 0.05 seconds...
+Currently working on DFM: 44 of 64 
+
+Complete in: 0.03 seconds...
+Currently working on DFM: 45 of 64 
+
+Complete in: 0.05 seconds...
+Currently working on DFM: 46 of 64 
+
+Complete in: 0.02 seconds...
+Currently working on DFM: 47 of 64 
+
+Complete in: 0.04 seconds...
+Currently working on DFM: 48 of 64 
+
+Complete in: 0.02 seconds...
+Currently working on DFM: 49 of 64 
+
+Complete in: 0.04 seconds...
+Currently working on DFM: 50 of 64 
+
+Complete in: 0.04 seconds...
+Currently working on DFM: 51 of 64 
+
+Complete in: 0.01 seconds...
+Currently working on DFM: 52 of 64 
+
+Complete in: 0.05 seconds...
+Currently working on DFM: 53 of 64 
+
+Complete in: 0.03 seconds...
+Currently working on DFM: 54 of 64 
+
+Complete in: 0.03 seconds...
+Currently working on DFM: 55 of 64 
+
+Complete in: 0.01 seconds...
+Currently working on DFM: 56 of 64 
+
+Complete in: 0.31 seconds...
+Currently working on DFM: 57 of 64 
+
+Complete in: 0.02 seconds...
+Currently working on DFM: 58 of 64 
+
+Complete in: 0.05 seconds...
+Currently working on DFM: 59 of 64 
+
+Complete in: 0.01 seconds...
+Currently working on DFM: 60 of 64 
+
+Complete in: 0.05 seconds...
+Currently working on DFM: 61 of 64 
+
+Complete in: 0.02 seconds...
+Currently working on DFM: 62 of 64 
+
+Complete in: 0.04 seconds...
+Currently working on DFM: 63 of 64 
+
+Complete in: 0.02 seconds...
+Currently working on DFM: 64 of 64 
+Complete in: 0 seconds...
+Generating regression results..
+The R^2 for this model is: 0.4718205 
+Regression results (negative coefficients imply less risk):
+                 Variable Coefficient    SE
+1               Intercept       0.151 0.016
+2      Remove Punctuation      -0.047 0.012
+3          Remove Numbers      -0.002 0.012
+4               Lowercase       0.002 0.012
+5                Stemming       0.026 0.012
+6        Remove Stopwords       0.006 0.012
+7 Remove Infrequent Terms       0.061 0.012
+Complete in: 4.97 seconds...</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb352"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb352-1"><a href="#cb352-1" aria-hidden="true" tabindex="-1"></a><span class="co"># regression</span></span>
+<span id="cb352-2"><a href="#cb352-2" aria-hidden="true" tabindex="-1"></a><span class="fu">regression_coefficient_plot</span>(preTextResults,</span>
+<span id="cb352-3"><a href="#cb352-3" aria-hidden="true" tabindex="-1"></a>                            <span class="at">remove_intercept =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in ggplot2::geom_point(ggplot2::aes(y = Variable, x = Coefficient), :
+Ignoring unknown parameters: `linewidth`</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="problem_set_01_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>In this case, it appears “Remove Infrequent Terms” is the one that will lead to the most substantive differences when it comes to preprocessing, as it is the only one that is both (1) positive and (2) significantly different. The rest appear to result in nonsignificant differences. In this case, my approach largely conforms with preText’s analysis. I’m using largely the same preprocessing approach and I am also taking a moderate approach to removing infrequent terms. However, I would elect to still remove some infrequent terms (rather than avoid taking them out altogether) given the high dimensionality of the current dataset. Retaining all 141,296 tokens is impractical and too computationally expensive to really be a feasible option.</p>
 </section>
 <section id="question-4" class="level2">
 <h2 class="anchored" data-anchor-id="question-4">Question 4</h2>
 <p>Pick an important source of variation in your data (for example: date, author identity, location, etc.). Subset the data along this dimension, and discuss which words discriminate better each group. You can do this by using TF-IDF, PMI, log(share <span class="math inline">\(word_i\)</span> in group a/share <span class="math inline">\(word_i\)</span> in b), or create a measure similar to Ban’s article.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb354"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb354-1"><a href="#cb354-1" aria-hidden="true" tabindex="-1"></a><span class="co">#checking options for variation</span></span>
+<span id="cb354-2"><a href="#cb354-2" aria-hidden="true" tabindex="-1"></a>df_corpus_trim<span class="sc">@</span>docvars <span class="sc">%&gt;%</span> <span class="fu">colnames</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> [1] "docname_"         "docid_"           "segid_"           "X"               
+ [5] "created_at"       "username"         "name"             "platform"        
+ [9] "party_clean"      "office_type"      "office.name"      "gender"          
+[13] "incumbent."       "candidate.status" "wonprimary"       "vote"            
+[17] "participation"    "fundraising"      "audience"         "engagement"      
+[21] "election_denial"  "trump_endorsed"  </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb356"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb356-1"><a href="#cb356-1" aria-hidden="true" tabindex="-1"></a><span class="co">#using tf-idf so see which words discriminate better for each group</span></span>
+<span id="cb356-2"><a href="#cb356-2" aria-hidden="true" tabindex="-1"></a>tfidf_terms <span class="ot">&lt;-</span> df_corpus_trim <span class="sc">%&gt;%</span> </span>
+<span id="cb356-3"><a href="#cb356-3" aria-hidden="true" tabindex="-1"></a>  <span class="co">#performing tf-idf</span></span>
+<span id="cb356-4"><a href="#cb356-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">dfm_tfidf</span>(<span class="at">scheme_tf =</span> <span class="st">"prop"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb356-5"><a href="#cb356-5" aria-hidden="true" tabindex="-1"></a>  <span class="co">#group by candidate status</span></span>
+<span id="cb356-6"><a href="#cb356-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">dfm_group</span>(candidate.status, <span class="at">force =</span> <span class="cn">TRUE</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb356-7"><a href="#cb356-7" aria-hidden="true" tabindex="-1"></a>  <span class="co">#convert and pivtot</span></span>
+<span id="cb356-8"><a href="#cb356-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">convert</span>(<span class="at">to =</span> <span class="st">"data.frame"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb356-9"><a href="#cb356-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(</span>
+<span id="cb356-10"><a href="#cb356-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">cols =</span> <span class="sc">!</span>doc_id,</span>
+<span id="cb356-11"><a href="#cb356-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">names_to =</span> <span class="st">"word"</span>,</span>
+<span id="cb356-12"><a href="#cb356-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">values_to =</span> <span class="st">"tf_idf"</span></span>
+<span id="cb356-13"><a href="#cb356-13" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb356-14"><a href="#cb356-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">status =</span> doc_id) <span class="sc">%&gt;%</span> </span>
+<span id="cb356-15"><a href="#cb356-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(status) <span class="sc">%&gt;%</span></span>
+<span id="cb356-16"><a href="#cb356-16" aria-hidden="true" tabindex="-1"></a>  <span class="co">#check top 10 words</span></span>
+<span id="cb356-17"><a href="#cb356-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(tf_idf)) <span class="sc">%&gt;%</span></span>
+<span id="cb356-18"><a href="#cb356-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice_head</span>(<span class="at">n =</span> <span class="dv">10</span>)</span>
+<span id="cb356-19"><a href="#cb356-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb356-20"><a href="#cb356-20" aria-hidden="true" tabindex="-1"></a><span class="co">#plotting word clouds to visualize</span></span>
+<span id="cb356-21"><a href="#cb356-21" aria-hidden="true" tabindex="-1"></a>tfidf_terms <span class="sc">%&gt;%</span></span>
+<span id="cb356-22"><a href="#cb356-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(</span>
+<span id="cb356-23"><a href="#cb356-23" aria-hidden="true" tabindex="-1"></a>    <span class="at">label =</span> word, <span class="at">color =</span> tf_idf)</span>
+<span id="cb356-24"><a href="#cb356-24" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">+</span></span>
+<span id="cb356-25"><a href="#cb356-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text_wordcloud</span>()  <span class="sc">+</span></span>
+<span id="cb356-26"><a href="#cb356-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb356-27"><a href="#cb356-27" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>status) <span class="sc">+</span></span>
+<span id="cb356-28"><a href="#cb356-28" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Most Common Words by Election Denial Status"</span>) <span class="sc">+</span></span>
+<span id="cb356-29"><a href="#cb356-29" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
+<span id="cb356-30"><a href="#cb356-30" aria-hidden="true" tabindex="-1"></a>    <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">"bold"</span>, <span class="at">hjust =</span> <span class="fl">0.5</span>)</span>
+<span id="cb356-31"><a href="#cb356-31" aria-hidden="true" tabindex="-1"></a>  ) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="problem_set_01_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Here, I’m using “Candidate Status” as source of variation. We see that those who were on the ballot appear to be using language more centered on spurring voters to vote, notably having multiple references to “elect”, “day”, and “vote.” It also seemed to cater more towards thanking voters for their support. In contrast, candidates that were not on the ballot appeared more likely to use language centered around some kind of announcement, notably “announce” and the most common words seem to suggest that their declaration was tied to removing someone from office or “trump”, either as a result of his endorsement or otherwise.</p>
 </section>
 <section id="question-5" class="level2">
 <h2 class="anchored" data-anchor-id="question-5">Question 5</h2>
 <p>Create a dictionary (or use a pre-existing dictionary) to measure a topic of interest in your data. It can be anything, sentiment, tone, misinformation, any topic of interest. Label your documents, and visualize the prevalence of your classes.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb357"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb357-1"><a href="#cb357-1" aria-hidden="true" tabindex="-1"></a><span class="co">#adding sentiment scores</span></span>
+<span id="cb357-2"><a href="#cb357-2" aria-hidden="true" tabindex="-1"></a>sentiment_doc <span class="ot">&lt;-</span> <span class="fu">docvars</span>(df_corpus_trim) <span class="sc">%&gt;%</span> </span>
+<span id="cb357-3"><a href="#cb357-3" aria-hidden="true" tabindex="-1"></a>  <span class="co">#adding document id</span></span>
+<span id="cb357-4"><a href="#cb357-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">doc_id =</span> <span class="fu">docnames</span>(df_corpus_trim)) <span class="sc">%&gt;%</span></span>
+<span id="cb357-5"><a href="#cb357-5" aria-hidden="true" tabindex="-1"></a>  <span class="co">#adding dictionary counts</span></span>
+<span id="cb357-6"><a href="#cb357-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">merge</span>(</span>
+<span id="cb357-7"><a href="#cb357-7" aria-hidden="true" tabindex="-1"></a>    df_corpus_trim <span class="sc">%&gt;%</span> </span>
+<span id="cb357-8"><a href="#cb357-8" aria-hidden="true" tabindex="-1"></a>      <span class="fu">dfm_lookup</span>(<span class="at">dictionary =</span> data_dictionary_LSD2015[<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>]) <span class="sc">%&gt;%</span> </span>
+<span id="cb357-9"><a href="#cb357-9" aria-hidden="true" tabindex="-1"></a>      <span class="fu">convert</span>(<span class="at">to =</span> <span class="st">"data.frame"</span>),</span>
+<span id="cb357-10"><a href="#cb357-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">by =</span> <span class="st">"doc_id"</span></span>
+<span id="cb357-11"><a href="#cb357-11" aria-hidden="true" tabindex="-1"></a>  ) </span>
+<span id="cb357-12"><a href="#cb357-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb357-13"><a href="#cb357-13" aria-hidden="true" tabindex="-1"></a>sentiment_doc <span class="sc">%&gt;%</span></span>
+<span id="cb357-14"><a href="#cb357-14" aria-hidden="true" tabindex="-1"></a>  <span class="co">#determining top sentiment</span></span>
+<span id="cb357-15"><a href="#cb357-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb357-16"><a href="#cb357-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">major_sentiment =</span> <span class="fu">ifelse</span>(</span>
+<span id="cb357-17"><a href="#cb357-17" aria-hidden="true" tabindex="-1"></a>      positive <span class="sc">&gt;</span> negative, <span class="st">"Positive"</span>, <span class="fu">ifelse</span>(</span>
+<span id="cb357-18"><a href="#cb357-18" aria-hidden="true" tabindex="-1"></a>        negative <span class="sc">&gt;</span> positive, <span class="st">"Negative"</span>, <span class="st">"Neutral"</span></span>
+<span id="cb357-19"><a href="#cb357-19" aria-hidden="true" tabindex="-1"></a>      )</span>
+<span id="cb357-20"><a href="#cb357-20" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb357-21"><a href="#cb357-21" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb357-22"><a href="#cb357-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(major_sentiment) <span class="sc">%&gt;%</span></span>
+<span id="cb357-23"><a href="#cb357-23" aria-hidden="true" tabindex="-1"></a>  <span class="co">#counting documents by sentiment</span></span>
+<span id="cb357-24"><a href="#cb357-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">count =</span> <span class="fu">n</span>()) <span class="sc">%&gt;%</span></span>
+<span id="cb357-25"><a href="#cb357-25" aria-hidden="true" tabindex="-1"></a>  <span class="co">#plotting</span></span>
+<span id="cb357-26"><a href="#cb357-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>() <span class="sc">+</span></span>
+<span id="cb357-27"><a href="#cb357-27" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="fu">aes</span>(<span class="at">x =</span> major_sentiment, <span class="at">y =</span> count, <span class="at">fill =</span> major_sentiment), <span class="at">alpha =</span> <span class="fl">0.7</span>) <span class="sc">+</span></span>
+<span id="cb357-28"><a href="#cb357-28" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb357-29"><a href="#cb357-29" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Major Sentiment"</span>,</span>
+<span id="cb357-30"><a href="#cb357-30" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Count"</span>,</span>
+<span id="cb357-31"><a href="#cb357-31" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Major Sentiment across Social Media Posts by Count"</span>,</span>
+<span id="cb357-32"><a href="#cb357-32" aria-hidden="true" tabindex="-1"></a>    <span class="at">subtitle =</span> <span class="st">"2022 Midterm Elections"</span>,</span>
+<span id="cb357-33"><a href="#cb357-33" aria-hidden="true" tabindex="-1"></a>    <span class="at">fill =</span> <span class="st">"Sentiment"</span></span>
+<span id="cb357-34"><a href="#cb357-34" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb357-35"><a href="#cb357-35" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="problem_set_01_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
 </section>
 <section id="question-6" class="level2">
 <h2 class="anchored" data-anchor-id="question-6">Question 6</h2>
 <p>Pick some documents (at least 10 for each class) that are exemplar (high probability) of being for each class of your dictionary. Read these documents. Now let’s try to augment a little your classifier.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb358"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb358-1"><a href="#cb358-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">88</span>)</span>
+<span id="cb358-2"><a href="#cb358-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb358-3"><a href="#cb358-3" aria-hidden="true" tabindex="-1"></a><span class="co">#get documents with high prob</span></span>
+<span id="cb358-4"><a href="#cb358-4" aria-hidden="true" tabindex="-1"></a>sample_sent <span class="ot">&lt;-</span> sentiment_doc <span class="sc">%&gt;%</span></span>
+<span id="cb358-5"><a href="#cb358-5" aria-hidden="true" tabindex="-1"></a>  <span class="co">#only getting documents with one sentiment and high counts for it</span></span>
+<span id="cb358-6"><a href="#cb358-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>((positive <span class="sc">==</span> <span class="dv">0</span> <span class="sc">|</span> negative <span class="sc">==</span> <span class="dv">0</span>) <span class="sc">&amp;</span> <span class="sc">!</span>(positive <span class="sc">==</span> <span class="dv">0</span> <span class="sc">&amp;</span> negative <span class="sc">==</span> <span class="dv">0</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb358-7"><a href="#cb358-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">total =</span>  positive <span class="sc">+</span> negative) <span class="sc">%&gt;%</span></span>
+<span id="cb358-8"><a href="#cb358-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(total <span class="sc">&gt;</span> <span class="dv">5</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb358-9"><a href="#cb358-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(</span>
+<span id="cb358-10"><a href="#cb358-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">cols =</span> <span class="fu">c</span>(<span class="st">"positive"</span>, <span class="st">"negative"</span>),</span>
+<span id="cb358-11"><a href="#cb358-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">names_to =</span> <span class="st">"class"</span></span>
+<span id="cb358-12"><a href="#cb358-12" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span> </span>
+<span id="cb358-13"><a href="#cb358-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(value <span class="sc">!=</span> <span class="dv">0</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb358-14"><a href="#cb358-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(class) <span class="sc">%&gt;%</span></span>
+<span id="cb358-15"><a href="#cb358-15" aria-hidden="true" tabindex="-1"></a>  <span class="co">#randomly select 10 for each class</span></span>
+<span id="cb358-16"><a href="#cb358-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice_sample</span>(<span class="at">n =</span> <span class="dv">10</span>) </span>
+<span id="cb358-17"><a href="#cb358-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb358-18"><a href="#cb358-18" aria-hidden="true" tabindex="-1"></a><span class="co">#retrieve original text </span></span>
+<span id="cb358-19"><a href="#cb358-19" aria-hidden="true" tabindex="-1"></a>sample_text <span class="ot">&lt;-</span> df <span class="sc">%&gt;%</span> </span>
+<span id="cb358-20"><a href="#cb358-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">merge</span>(</span>
+<span id="cb358-21"><a href="#cb358-21" aria-hidden="true" tabindex="-1"></a>    sample_sent, </span>
+<span id="cb358-22"><a href="#cb358-22" aria-hidden="true" tabindex="-1"></a>    <span class="at">by =</span> <span class="st">"X"</span>,</span>
+<span id="cb358-23"><a href="#cb358-23" aria-hidden="true" tabindex="-1"></a>    <span class="at">all.y =</span> T</span>
+<span id="cb358-24"><a href="#cb358-24" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb358-25"><a href="#cb358-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(class, doc_id, X, text) </span>
+<span id="cb358-26"><a href="#cb358-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb358-27"><a href="#cb358-27" aria-hidden="true" tabindex="-1"></a>sample_text <span class="sc">%&gt;%</span> <span class="fu">pull</span>(text)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> [1] "The Early Voting polls are still open for another week before Election Day on Nov. 8th! 🔴 As a Green Beret Veteran, a business owner, and a father, I know the important part Washington politics plays in all of our lives. I believe it is time we have truth and dignity in the House, not just political games or government overreach. I will work to end our continued inflation, strengthen our National Security, and get us closer to Energy Independence, because all Americans deserve better. Learn more about my plans for Congress here ↙️ https://www.harriganforcongress.com/"                                                                                        
+ [2] "This is a must read; \"Crime in 2020 was 60% lower than in 1980. The crime rate began consistently declining in the early 1990s and fell every year between 2001 and 2020. Both property and violent crimes reflect this long-term trend of decreasing crime. Property crime is down 63% since 1980, and violent crime is down 33%. Property crime per 100,000 people ranged from 1,460 in New York City to 6,128 in Memphis...Violent crime decreased since 1991 in 39 states and Washington, DC. It declined by more than 60% in New Jersey, New York, Florida, and Connecticut. Meanwhile, the violent crime rate more than doubled in North Dakota, Montana, and South Dakota.\""
+ [3] "Thank you for your courage and for putting your country first. Thank you for protecting our country, for your bravery, and for all that you do and have done to make this country safe. Wishing you a very Happy Veteran's day! #VeteransDay #VeteransDay2022"                                                                                                                                                                                                                                                                                                                                                                                                                       
+ [4] "Denise and I had such a great night visiting with so many friends and neighbors at the Bartholomew County Republicans Fall Dinner! 🇺🇸 \n\nOur local county parties are vital to the GOP’s success, and that’s why I’m always happy to lend a helping hand in their mission to elect Republicans up and down the ticket. \n\nRemember to get out and VOTE on November 8th! 🗳"                                                                                                                                                                                                                                                                                                         
+ [5] "Roberta and I are extremely grateful for the support and friendship across the 8th District of Tennessee. \n\nIt is our greatest honor to serve this great state we all call home.\n\nThank you for your trust in us."                                                                                                                                                                                                                                                                                                                                                                                                                                                               
+ [6] "Happy Veterans Day! #NY21 is home to the largest number of veterans of any Congressional District in NY. I was honored to participate in today’s ceremony dedicating the Essex County Leathernecks Marine Corps League Monument in Crown Point! We thank &amp; honor all of our veterans!🇺🇸"                                                                                                                                                                                                                                                                                                                                                                                             
+ [7] "The horrifying attack on Paul Pelosi is the result of extremist rhetoric that threatens both our democracy and the lives &amp;amp; families of those who step up to serve. Everyone--on both sides of the aisle--must condemn the conspiracy theories that motivate these assaults."                                                                                                                                                                                                                                                                                                                                                                                                     
+ [8] "Alaskans voted for a better future, one where our fisheries are rehabilitated, our rights are preserved, and our families can afford to not only survive, but thrive. I’m happy they did. Now it’s time to make that a reality."                                                                                                                                                                                                                                                                                                                                                                                                                                                     
+ [9] "Yvette Herrell and her friends can’t defend her awful record in Congress, so they’re doing what they do best - lying to get ahead. So here’s the truth. Let’s win #NM02 and elect a real champion for the working class. https://t.co/c4hShu5yYu"                                                                                                                                                                                                                                                                                                                                                                                                                                    
+[10] "Thank you to everyone who made last night’s event at Georgia Blue Gallery so special! \n\nThank you to Georgia for hosting us, thank you to Byron Nicholai for your beautiful performance, and thank you to the artists who shared their art with us. #MaryForCongress https://t.co/9l6joOizMy"                                                                                                                                                                                                                                                                                                                                                                                      
+[11] "No, any American except a sitting member of the US House or Senate can be indicted for war crimes if they commit one or more war crimes. But the worst war crime is aggression, and I focus on that. Presidents, Secretaries of State &amp;amp; \"Defense\", and judges.\nhttps://t.co/7riUJPharR https://t.co/8iweaELc6X"                                                                                                                                                                                                                                                                                                                                                               
+[12] "I have no idea how many presidents must be impeached &amp;amp; removed for war crimes before the lesson finally sinks in: become the president, refuse to stop ongoing, illegal, immoral wars of aggression, get impeached &amp;amp; removed. Maybe it'll take only 2 or 3 presidents before they get it https://t.co/xoyzfX90Lh"                                                                                                                                                                                                                                                                                                                                                            
+[13] "Thank you Narragansett Dems for supporting great candidates who care about working people. \n\nOil and drug companies might be trying to buy Allan Fung a congressional seat, but with your help we’ll keep #CD2 blue! https://t.co/9xt7wfwwh8"                                                                                                                                                                                                                                                                                                                                                                                                                                      
+[14] "Any dealmaking with this terrorist regime should be permanently dead.\n\nIran is funding terrorism across the globe, giving missiles &amp;amp; drones to Putin to commit war crimes in Ukraine, plotting to assassinate American officials, and murdering its own children, women &amp;amp; men. #alsen https://t.co/3YuBVUp47C"                                                                                                                                                                                                                                                                                                                                                             
+[15] "@jackieraimo @Schneider4IL10 @MomsDemand @JudgeRochford @VoteJoyceMason @VoteVega22 @Carissa4LCB7 @RepSchneider Brads afraid to debate because of the truth.Careful who you endorse. I’ve fought for Moms, children and community. Brad looks to profit off pain and didn’t solve any problems. His sister in law shot up a school and he still has no empathy for gun violence victims. \n#loridann"                                                                                                                                                                                                                                                                                
+[16] ".@kdeleon continues to downplay his anti-Black, racist words &amp;amp; actions. He purposely distracts from their ploy to disenfranchise Black Angelenos.\n\nThis wasn’t just “condoning racist language,” it is blatant racism backed by racist policy.\nNow, more than ever, KDL must RESIGN. https://t.co/gFzo91YeTW"                                                                                                                                                                                                                                                                                                                                                                 
+[17] "Wishing you all a Happy Thanksgiving-a day of reflection to count our blessings with gratitude! I’m especially thankful for my family, friends &amp;amp; the many constituents I’ve come to know over the years who have made me a stronger, more dedicated public servant. God bless &amp;amp; enjoy! https://t.co/MmM6Z900Gd"                                                                                                                                                                                                                                                                                                                                                              
+[18] "The government of Venezuela is deliberately releasing prisoners – including violent criminals convicted of murder and rape. Those same freed prisoners are in the illegal immigrant caravans marching to our border. https://t.co/jBfb7yc9tG"                                                                                                                                                                                                                                                                                                                                                                                                                                        
+[19] "Ilhan Omar cannot be allowed to return to congress! She has left us helpless! Our city is worse off than when she was elected! Look at the rampant crime, homelessness, and poverty invading our streets! She could have fixed these problems for our district, but she abandoned us! https://t.co/7QbiXIJs79"                                                                                                                                                                                                                                                                                                                                                                       
+[20] "I’m praying for Paul Pelosi and condemn violence against anyone, no matter who does it. After having my volunteers get assaulted and my family members’ lives threatened, I am disgusted by this violent attack.&nbsp;We need to hold these individuals accountable... https://t.co/ZDgDq0KLLB"                                                                                                                                                                                                                                                                                                                                                                                           </code></pre>
+</div>
+</div>
 <section id="question-6.1" class="level3">
 <h3 class="anchored" data-anchor-id="question-6.1">Question 6.1</h3>
 <p>Using cosine similarity, grab the closest 10 documents to each reference document you read before. Read those. How well does the cosine similarity work? Try with another measure of distance. Anything interesting there?</p>
+<section id="cosine" class="level5">
+<h5 class="anchored" data-anchor-id="cosine">Cosine</h5>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb360"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb360-1"><a href="#cb360-1" aria-hidden="true" tabindex="-1"></a><span class="co">#computing cosine similarity in ref to docs</span></span>
+<span id="cb360-2"><a href="#cb360-2" aria-hidden="true" tabindex="-1"></a>closest_docs <span class="ot">&lt;-</span> <span class="fu">textstat_simil</span>(</span>
+<span id="cb360-3"><a href="#cb360-3" aria-hidden="true" tabindex="-1"></a>    df_corpus_trim, </span>
+<span id="cb360-4"><a href="#cb360-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> df_corpus_trim[sample_sent<span class="sc">$</span>doc_id,],</span>
+<span id="cb360-5"><a href="#cb360-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">margin =</span> <span class="st">"documents"</span>,</span>
+<span id="cb360-6"><a href="#cb360-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">method =</span> <span class="st">"cosine"</span></span>
+<span id="cb360-7"><a href="#cb360-7" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb360-8"><a href="#cb360-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as.data.frame</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb360-9"><a href="#cb360-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(document2) <span class="sc">%&gt;%</span></span>
+<span id="cb360-10"><a href="#cb360-10" aria-hidden="true" tabindex="-1"></a>  <span class="co">#take the top closest docs</span></span>
+<span id="cb360-11"><a href="#cb360-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(cosine)) <span class="sc">%&gt;%</span></span>
+<span id="cb360-12"><a href="#cb360-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice_head</span>(<span class="at">n =</span> <span class="dv">10</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb360-13"><a href="#cb360-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(</span>
+<span id="cb360-14"><a href="#cb360-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">doc =</span> document1,</span>
+<span id="cb360-15"><a href="#cb360-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">ref_doc =</span> document2,</span>
+<span id="cb360-16"><a href="#cb360-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">cosine =</span> cosine</span>
+<span id="cb360-17"><a href="#cb360-17" aria-hidden="true" tabindex="-1"></a>  ) </span>
+<span id="cb360-18"><a href="#cb360-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb360-19"><a href="#cb360-19" aria-hidden="true" tabindex="-1"></a><span class="co">#add text and doc to docvars</span></span>
+<span id="cb360-20"><a href="#cb360-20" aria-hidden="true" tabindex="-1"></a><span class="fu">docvars</span>(df_corpus_trim, <span class="st">"text"</span>) <span class="ot">&lt;-</span> df[df<span class="sc">$</span>X <span class="sc">%in%</span> <span class="fu">docvars</span>(df_corpus_trim)<span class="sc">$</span>X, <span class="st">"text"</span>]</span>
+<span id="cb360-21"><a href="#cb360-21" aria-hidden="true" tabindex="-1"></a><span class="fu">docvars</span>(df_corpus_trim, <span class="st">"doc"</span>) <span class="ot">&lt;-</span> df_corpus_trim<span class="sc">@</span>Dimnames[<span class="st">"docs"</span>]</span>
+<span id="cb360-22"><a href="#cb360-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb360-23"><a href="#cb360-23" aria-hidden="true" tabindex="-1"></a><span class="co">#add text</span></span>
+<span id="cb360-24"><a href="#cb360-24" aria-hidden="true" tabindex="-1"></a>closest_docs <span class="sc">%&gt;%</span></span>
+<span id="cb360-25"><a href="#cb360-25" aria-hidden="true" tabindex="-1"></a>  <span class="co">#adding text</span></span>
+<span id="cb360-26"><a href="#cb360-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">merge</span>(</span>
+<span id="cb360-27"><a href="#cb360-27" aria-hidden="true" tabindex="-1"></a>    <span class="fu">docvars</span>(df_corpus_trim) <span class="sc">%&gt;%</span> <span class="fu">select</span>(doc, text),</span>
+<span id="cb360-28"><a href="#cb360-28" aria-hidden="true" tabindex="-1"></a>    <span class="at">by =</span> <span class="st">"doc"</span></span>
+<span id="cb360-29"><a href="#cb360-29" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span> </span>
+<span id="cb360-30"><a href="#cb360-30" aria-hidden="true" tabindex="-1"></a>  <span class="co">#adding reference text</span></span>
+<span id="cb360-31"><a href="#cb360-31" aria-hidden="true" tabindex="-1"></a>  <span class="fu">merge</span>(</span>
+<span id="cb360-32"><a href="#cb360-32" aria-hidden="true" tabindex="-1"></a>    sample_text <span class="sc">%&gt;%</span> <span class="fu">rename</span>(<span class="at">ref_doc =</span> doc_id, <span class="at">ref_text =</span> text), </span>
+<span id="cb360-33"><a href="#cb360-33" aria-hidden="true" tabindex="-1"></a>    <span class="at">by =</span> <span class="st">"ref_doc"</span>,</span>
+<span id="cb360-34"><a href="#cb360-34" aria-hidden="true" tabindex="-1"></a>    <span class="at">all.x =</span> T</span>
+<span id="cb360-35"><a href="#cb360-35" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span> </span>
+<span id="cb360-36"><a href="#cb360-36" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(class, ref_doc, ref_text, doc, text) <span class="sc">%&gt;%</span> <span class="fu">View</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Using cosine similarity, it appears that the top 10 most similar documents generally appear to have similar sentiments and/or matching topics to the original reference document. This appears somewhat dependent on the overall “extremism” of the original reference document. Reference document that appears more obvious positive or sentiment seem more likely to have “similar” documents that have matching sentiments. Similarly, reference documents that seem clearly about a specific topic appear to be more likely to have matching content across their “similar” documents. In contrast, reference documents that might use more common words or are more neutral in sentiment, seem to vary a lot in terms of their “similar documents.” In those cases, the similarities are harder to identify. Neither the content, tone, or overall sentiment seemed similar at first glance. For example, one reference document containing critiques on a specific politician was notably said to be “similar” to other documents that were notably more positive in sentiment–containing documents thanking constituents for their support. What is similar about these documents is not obviously apparent.</p>
+</section>
+<section id="correlation" class="level5">
+<h5 class="anchored" data-anchor-id="correlation">Correlation</h5>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb361"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb361-1"><a href="#cb361-1" aria-hidden="true" tabindex="-1"></a><span class="co">#computing correlation in ref to docs</span></span>
+<span id="cb361-2"><a href="#cb361-2" aria-hidden="true" tabindex="-1"></a>closest_docs_cor <span class="ot">&lt;-</span> <span class="fu">textstat_simil</span>(</span>
+<span id="cb361-3"><a href="#cb361-3" aria-hidden="true" tabindex="-1"></a>    df_corpus_trim, </span>
+<span id="cb361-4"><a href="#cb361-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> df_corpus_trim[sample_sent<span class="sc">$</span>doc_id,],</span>
+<span id="cb361-5"><a href="#cb361-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">margin =</span> <span class="st">"documents"</span>,</span>
+<span id="cb361-6"><a href="#cb361-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">method =</span> <span class="st">"correlation"</span></span>
+<span id="cb361-7"><a href="#cb361-7" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb361-8"><a href="#cb361-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as.data.frame</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb361-9"><a href="#cb361-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(document2) <span class="sc">%&gt;%</span></span>
+<span id="cb361-10"><a href="#cb361-10" aria-hidden="true" tabindex="-1"></a>  <span class="co">#take the top closest docs</span></span>
+<span id="cb361-11"><a href="#cb361-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(correlation)) <span class="sc">%&gt;%</span></span>
+<span id="cb361-12"><a href="#cb361-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice_head</span>(<span class="at">n =</span> <span class="dv">10</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb361-13"><a href="#cb361-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(</span>
+<span id="cb361-14"><a href="#cb361-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">doc =</span> document1,</span>
+<span id="cb361-15"><a href="#cb361-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">ref_doc =</span> document2,</span>
+<span id="cb361-16"><a href="#cb361-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">correlation =</span> correlation</span>
+<span id="cb361-17"><a href="#cb361-17" aria-hidden="true" tabindex="-1"></a>  ) </span>
+<span id="cb361-18"><a href="#cb361-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb361-19"><a href="#cb361-19" aria-hidden="true" tabindex="-1"></a><span class="co">#add text</span></span>
+<span id="cb361-20"><a href="#cb361-20" aria-hidden="true" tabindex="-1"></a>closest_docs_cor <span class="sc">%&gt;%</span></span>
+<span id="cb361-21"><a href="#cb361-21" aria-hidden="true" tabindex="-1"></a>  <span class="co">#add text</span></span>
+<span id="cb361-22"><a href="#cb361-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">merge</span>(</span>
+<span id="cb361-23"><a href="#cb361-23" aria-hidden="true" tabindex="-1"></a>    <span class="fu">docvars</span>(df_corpus_trim) <span class="sc">%&gt;%</span> <span class="fu">select</span>(doc, text),</span>
+<span id="cb361-24"><a href="#cb361-24" aria-hidden="true" tabindex="-1"></a>    <span class="at">by =</span> <span class="st">"doc"</span></span>
+<span id="cb361-25"><a href="#cb361-25" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span> </span>
+<span id="cb361-26"><a href="#cb361-26" aria-hidden="true" tabindex="-1"></a>  <span class="co">#add ref text</span></span>
+<span id="cb361-27"><a href="#cb361-27" aria-hidden="true" tabindex="-1"></a>  <span class="fu">merge</span>(</span>
+<span id="cb361-28"><a href="#cb361-28" aria-hidden="true" tabindex="-1"></a>    sample_text <span class="sc">%&gt;%</span> <span class="fu">rename</span>(<span class="at">ref_doc =</span> doc_id, <span class="at">ref_text =</span> text), </span>
+<span id="cb361-29"><a href="#cb361-29" aria-hidden="true" tabindex="-1"></a>    <span class="at">by =</span> <span class="st">"ref_doc"</span>,</span>
+<span id="cb361-30"><a href="#cb361-30" aria-hidden="true" tabindex="-1"></a>    <span class="at">all.x =</span> T</span>
+<span id="cb361-31"><a href="#cb361-31" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span> </span>
+<span id="cb361-32"><a href="#cb361-32" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(class, ref_doc, ref_text, doc, text) <span class="sc">%&gt;%</span> <span class="fu">View</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Here, I utilized correlation as an alternative measure of similarity. The results seem comparable with cosine similarity, with many of the same documents being listed as similar. Correlation introduces some new documents and omits others that cosine similarity had marked as similar but the new inclusions overall seem obvious in why they were considered similar. While some new additions are dubious, there are no more dubious than the one’s marked similar via cosine similarity.</p>
+</section>
 </section>
 <section id="question-6.2" class="level3">
 <h3 class="anchored" data-anchor-id="question-6.2">Question 6.2</h3>
-<p>Now, check qualitative these documents. Take a look at the top features, Keyword in Context, Higher TF-IDF. Would you change anything in your dictionary now that you looked in these documents?</p>
+<p>Now, check qualitative these documents. Take a look at the top features, keyword in Context, higher TF-IDF. Would you change anything in your dictionary now that you looked in these documents?</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb362"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb362-1"><a href="#cb362-1" aria-hidden="true" tabindex="-1"></a><span class="co">#check top features</span></span>
+<span id="cb362-2"><a href="#cb362-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb362-3"><a href="#cb362-3" aria-hidden="true" tabindex="-1"></a>topfeat <span class="ot">&lt;-</span> <span class="fu">dfm_subset</span>(df_corpus_trim, <span class="at">subset =</span> <span class="fu">docnames</span>(df_corpus_trim) <span class="sc">%in%</span> closest_docs<span class="sc">$</span>doc) <span class="sc">%&gt;%</span> <span class="fu">topfeatures</span>()</span>
+<span id="cb362-4"><a href="#cb362-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb362-5"><a href="#cb362-5" aria-hidden="true" tabindex="-1"></a>topfeat</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  thank     amp    vote   crime  famili     day veteran     war     get      us 
+     69      56      53      52      46      42      41      40      39      39 </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb364"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb364-1"><a href="#cb364-1" aria-hidden="true" tabindex="-1"></a><span class="co">#tf-idf</span></span>
+<span id="cb364-2"><a href="#cb364-2" aria-hidden="true" tabindex="-1"></a><span class="fu">dfm_subset</span>(df_corpus_trim, <span class="at">subset =</span> <span class="fu">docnames</span>(df_corpus_trim) <span class="sc">%in%</span> closest_docs<span class="sc">$</span>doc) <span class="sc">%&gt;%</span></span>
+<span id="cb364-3"><a href="#cb364-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">dfm_tfidf</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb364-4"><a href="#cb364-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">topfeatures</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>       amp      crime    veteran        war       vote      thank republican 
+  46.59582   41.04444   40.73089   39.73745   39.12268   38.23314   37.59221 
+    pelosi     counti        day 
+  36.37178   35.41569   33.15128 </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb366"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb366-1"><a href="#cb366-1" aria-hidden="true" tabindex="-1"></a><span class="co">#keywords in context</span></span>
+<span id="cb366-2"><a href="#cb366-2" aria-hidden="true" tabindex="-1"></a>kic <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(<span class="fu">matrix</span>(<span class="at">ncol =</span> <span class="dv">7</span>, <span class="at">nrow =</span> <span class="dv">0</span>))</span>
+<span id="cb366-3"><a href="#cb366-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb366-4"><a href="#cb366-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (word <span class="cf">in</span> <span class="fu">names</span>(topfeat)) {</span>
+<span id="cb366-5"><a href="#cb366-5" aria-hidden="true" tabindex="-1"></a>  <span class="co">#corpus of the similar documents, tokenize to meet kwic requirements</span></span>
+<span id="cb366-6"><a href="#cb366-6" aria-hidden="true" tabindex="-1"></a>  temp_corpus <span class="ot">&lt;-</span> <span class="fu">corpus</span>(<span class="fu">docvars</span>(<span class="fu">dfm_subset</span>(df_corpus_trim, <span class="at">subset =</span> <span class="fu">docnames</span>(df_corpus_trim) <span class="sc">%in%</span> closest_docs<span class="sc">$</span>doc))<span class="sc">$</span>text) <span class="sc">%&gt;%</span> </span>
+<span id="cb366-7"><a href="#cb366-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">tokens</span>(<span class="at">remove_punct =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb366-8"><a href="#cb366-8" aria-hidden="true" tabindex="-1"></a>           <span class="at">remove_numbers =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb366-9"><a href="#cb366-9" aria-hidden="true" tabindex="-1"></a>  <span class="co">#compute kiwc</span></span>
+<span id="cb366-10"><a href="#cb366-10" aria-hidden="true" tabindex="-1"></a>  context <span class="ot">&lt;-</span> <span class="fu">kwic</span>(temp_corpus, <span class="at">pattern =</span> word, <span class="at">window =</span> <span class="dv">5</span>)</span>
+<span id="cb366-11"><a href="#cb366-11" aria-hidden="true" tabindex="-1"></a>  <span class="co">#add to df</span></span>
+<span id="cb366-12"><a href="#cb366-12" aria-hidden="true" tabindex="-1"></a>  kic <span class="ot">&lt;-</span> <span class="fu">rbind</span>(kic, context)</span>
+<span id="cb366-13"><a href="#cb366-13" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb366-14"><a href="#cb366-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb366-15"><a href="#cb366-15" aria-hidden="true" tabindex="-1"></a>kic <span class="sc">%&gt;%</span> <span class="fu">head</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Keyword-in-context with 6 matches.                                                         
+  [text1, 1]                                    | Thank |
+  [text2, 1]                                    | Thank |
+  [text3, 1]                                    | Thank |
+ [text3, 16]    Georgia Blue Gallery so special | Thank |
+ [text3, 23]          to Georgia for hosting us | thank |
+ [text3, 33] for your beautiful performance and | thank |
+                           
+ you Diana                 
+ you#BasaltCO              
+ you to everyone who made  
+ you to Georgia for hosting
+ you to Byron Nicholai for 
+ you to the artists who    </code></pre>
+</div>
+</div>
+<p>I would consider integrating some of the top features into the dictionary. While some words, such as “crime” are already marked as “negative sentiment” in the dictionary, words such as “famili” and its equivalents are not. Given its frequency and importance, future sentiment analyses using this dataset should consider it when labeling sentiments.</p>
 </section>
 </section>
 
 </main>
 <!-- /main column -->
 <script id="quarto-html-after-body" type="application/javascript">
-window.document.addEventListener("DOMContentLoaded", function (event) {
-  const toggleBodyColorMode = (bsSheetEl) => {
-    const mode = bsSheetEl.getAttribute("data-mode");
-    const bodyEl = window.document.querySelector("body");
-    if (mode === "dark") {
-      bodyEl.classList.add("quarto-dark");
-      bodyEl.classList.remove("quarto-light");
-    } else {
-      bodyEl.classList.add("quarto-light");
-      bodyEl.classList.remove("quarto-dark");
-    }
-  }
-  const toggleBodyColorPrimary = () => {
-    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
-    if (bsSheetEl) {
-      toggleBodyColorMode(bsSheetEl);
-    }
-  }
-  toggleBodyColorPrimary();  
-  const icon = "";
-  const anchorJS = new window.AnchorJS();
-  anchorJS.options = {
-    placement: 'right',
-    icon: icon
-  };
-  anchorJS.add('.anchored');
-  const isCodeAnnotation = (el) => {
-    for (const clz of el.classList) {
-      if (clz.startsWith('code-annotation-')) {                     
-        return true;
-      }
-    }
-    return false;
-  }
-  const clipboard = new window.ClipboardJS('.code-copy-button', {
-    text: function(trigger) {
-      const codeEl = trigger.previousElementSibling.cloneNode(true);
-      for (const childEl of codeEl.children) {
-        if (isCodeAnnotation(childEl)) {
-          childEl.remove();
-        }
-      }
-      return codeEl.innerText;
-    }
-  });
-  clipboard.on('success', function(e) {
-    // button target
-    const button = e.trigger;
-    // don't keep focus
-    button.blur();
-    // flash "checked"
-    button.classList.add('code-copy-button-checked');
-    var currentTitle = button.getAttribute("title");
-    button.setAttribute("title", "Copied!");
-    let tooltip;
-    if (window.bootstrap) {
-      button.setAttribute("data-bs-toggle", "tooltip");
-      button.setAttribute("data-bs-placement", "left");
-      button.setAttribute("data-bs-title", "Copied!");
-      tooltip = new bootstrap.Tooltip(button, 
-        { trigger: "manual", 
-          customClass: "code-copy-button-tooltip",
-          offset: [0, -8]});
-      tooltip.show();    
-    }
-    setTimeout(function() {
-      if (tooltip) {
-        tooltip.hide();
-        button.removeAttribute("data-bs-title");
-        button.removeAttribute("data-bs-toggle");
-        button.removeAttribute("data-bs-placement");
-      }
-      button.setAttribute("title", currentTitle);
-      button.classList.remove('code-copy-button-checked');
-    }, 1000);
-    // clear code selection
-    e.clearSelection();
-  });
-  function tippyHover(el, contentFn) {
-    const config = {
-      allowHTML: true,
-      content: contentFn,
-      maxWidth: 500,
-      delay: 100,
-      arrow: false,
-      appendTo: function(el) {
-          return el.parentElement;
-      },
-      interactive: true,
-      interactiveBorder: 10,
-      theme: 'quarto',
-      placement: 'bottom-start'
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
     };
-    window.tippy(el, config); 
-  }
-  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
-  for (var i=0; i<noterefs.length; i++) {
-    const ref = noterefs[i];
-    tippyHover(ref, function() {
-      // use id or data attribute instead here
-      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
-      try { href = new URL(href).hash; } catch {}
-      const id = href.replace(/^#\/?/, "");
-      const note = window.document.getElementById(id);
-      return note.innerHTML;
-    });
-  }
-      let selectedAnnoteEl;
-      const selectorForAnnotation = ( cell, annotation) => {
-        let cellAttr = 'data-code-cell="' + cell + '"';
-        let lineAttr = 'data-code-annotation="' +  annotation + '"';
-        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
-        return selector;
-      }
-      const selectCodeLines = (annoteEl) => {
-        const doc = window.document;
-        const targetCell = annoteEl.getAttribute("data-target-cell");
-        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
-        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
-        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
-        const lineIds = lines.map((line) => {
-          return targetCell + "-" + line;
-        })
-        let top = null;
-        let height = null;
-        let parent = null;
-        if (lineIds.length > 0) {
-            //compute the position of the single el (top and bottom and make a div)
-            const el = window.document.getElementById(lineIds[0]);
-            top = el.offsetTop;
-            height = el.offsetHeight;
-            parent = el.parentElement.parentElement;
-          if (lineIds.length > 1) {
-            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
-            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
-            height = bottom - top;
-          }
-          if (top !== null && height !== null && parent !== null) {
-            // cook up a div (if necessary) and position it 
-            let div = window.document.getElementById("code-annotation-line-highlight");
-            if (div === null) {
-              div = window.document.createElement("div");
-              div.setAttribute("id", "code-annotation-line-highlight");
-              div.style.position = 'absolute';
-              parent.appendChild(div);
-            }
-            div.style.top = top - 2 + "px";
-            div.style.height = height + 4 + "px";
-            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
-            if (gutterDiv === null) {
-              gutterDiv = window.document.createElement("div");
-              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
-              gutterDiv.style.position = 'absolute';
-              const codeCell = window.document.getElementById(targetCell);
-              const gutter = codeCell.querySelector('.code-annotation-gutter');
-              gutter.appendChild(gutterDiv);
-            }
-            gutterDiv.style.top = top - 2 + "px";
-            gutterDiv.style.height = height + 4 + "px";
-          }
-          selectedAnnoteEl = annoteEl;
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
         }
-      };
-      const unselectCodeLines = () => {
-        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
-        elementsIds.forEach((elId) => {
-          const div = window.document.getElementById(elId);
-          if (div) {
-            div.remove();
-          }
-        });
-        selectedAnnoteEl = undefined;
-      };
-      // Attach click handler to the DT
-      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
-      for (const annoteDlNode of annoteDls) {
-        annoteDlNode.addEventListener('click', (event) => {
-          const clickedEl = event.target;
-          if (clickedEl !== selectedAnnoteEl) {
-            unselectCodeLines();
-            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
-            if (activeEl) {
-              activeEl.classList.remove('code-annotation-active');
-            }
-            selectCodeLines(clickedEl);
-            clickedEl.classList.add('code-annotation-active');
-          } else {
-            // Unselect the line
-            unselectCodeLines();
-            clickedEl.classList.remove('code-annotation-active');
-          }
-        });
       }
-  const findCites = (el) => {
-    const parentEl = el.parentElement;
-    if (parentEl) {
-      const cites = parentEl.dataset.cites;
-      if (cites) {
-        return {
-          el,
-          cites: cites.split(' ')
-        };
-      } else {
-        return findCites(el.parentElement)
-      }
-    } else {
-      return undefined;
+      return false;
     }
-  };
-  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
-  for (var i=0; i<bibliorefs.length; i++) {
-    const ref = bibliorefs[i];
-    const citeInfo = findCites(ref);
-    if (citeInfo) {
-      tippyHover(citeInfo.el, function() {
-        var popup = window.document.createElement('div');
-        citeInfo.cites.forEach(function(cite) {
-          var citeDiv = window.document.createElement('div');
-          citeDiv.classList.add('hanging-indent');
-          citeDiv.classList.add('csl-entry');
-          var biblioDiv = window.document.getElementById('ref-' + cite);
-          if (biblioDiv) {
-            citeDiv.innerHTML = biblioDiv.innerHTML;
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+        const codeEl = trigger.previousElementSibling.cloneNode(true);
+        for (const childEl of codeEl.children) {
+          if (isCodeAnnotation(childEl)) {
+            childEl.remove();
           }
-          popup.appendChild(citeDiv);
-        });
-        return popup.innerHTML;
+        }
+        return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
       });
     }
-  }
-});
-</script>
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
 </div> <!-- /content -->
+
 
 
 
